@@ -2,7 +2,7 @@
 
 * Icon:
 
-![alt](https://raw.githubusercontent.com/HungNguyen81/Project1-AdvanceToDoList/master/AdvanceTDL/icTDL.ico?token=AMAVN3OEU5YGR5SQMJYPDE27PLB4W)
+![alt](https://github.com/HungNguyen81/Project1-AdvanceToDoList/blob/master/AdvanceTDL/bin/Debug/icTDL.ico)
 
 * ScreenShoots:
 
