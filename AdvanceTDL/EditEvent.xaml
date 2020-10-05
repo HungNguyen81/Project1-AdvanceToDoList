@@ -1,0 +1,192 @@
+﻿<Window x:Class="AdvanceTDL.EditEvent"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AdvanceTDL"
+        mc:Ignorable="d"
+        Title="Sửa Thông Tin Sự Kiện" Height="473.761" Width="457.088"
+        Icon="/logo_HUST.png"
+        WindowStartupLocation="CenterScreen"
+        Closing="EditWindow_Closing">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFB82A00"/>
+                <GradientStop Color="#FFDC9C12" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+            <TextBox x:Name="txt_edit_tenSK"
+                Margin="15"
+                Height="25"
+                Grid.Column="1"
+                Grid.Row="1"
+                MouseDoubleClick="txt_edit_tenSK_MouseDoubleClick">
+            </TextBox>
+            <TextBox x:Name="txt_edit_motaSK"
+                Margin="15"
+                Height="25"
+                Grid.Column="1"
+                Grid.Row="2"
+                MouseDoubleClick="txt_edit_motaSK_MouseDoubleClick">
+            </TextBox>
+            <DatePicker
+                x:Name="date_edit"
+                Margin="15"
+                Grid.Column="1"
+                Grid.Row="3">
+            </DatePicker>
+            <ComboBox
+                x:Name="cb_gio"
+                Margin="15"
+                Grid.Column="1"
+                Grid.Row="4">
+            </ComboBox>
+            <ComboBox
+                x:Name="cb_phut"
+                Margin="15"
+                Grid.Column="1"
+                Grid.Row="5">
+            </ComboBox>
+            <TextBlock x:Name="txb_Id"
+                       Margin="15"
+                       FontSize="50"
+                       Grid.Column="0"
+                       Grid.Row="6"
+                       Grid.RowSpan="2">ID
+            </TextBlock>
+
+        <TextBlock
+            Grid.ColumnSpan="2"
+            FontSize="30"
+            FontWeight="DemiBold"
+            TextAlignment="Center"
+            VerticalAlignment="Center">
+            CHỈNH SỬA SỰ KIỆN
+        </TextBlock>
+        <TextBlock
+            Grid.ColumnSpan="2"
+            FontSize="30"
+            FontWeight="DemiBold"
+            TextAlignment="Center"
+            VerticalAlignment="Center"
+            Foreground="Plum"
+            Margin="4 4 0 0">
+            CHỈNH SỬA SỰ KIỆN
+        </TextBlock>
+
+        <TextBlock
+            Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            FontSize="15"
+            FontWeight="DemiBold"
+            Foreground="White"
+            Margin="10">
+            Tên Sự Kiện:
+        </TextBlock>
+        <TextBlock
+            Grid.Row="2"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            FontSize="15"
+            FontWeight="DemiBold"
+            Foreground="White"
+            Margin="10">
+            Mô Tả Sự Kiện:
+        </TextBlock>
+        <TextBlock
+            Grid.Row="3"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            FontSize="15"
+            FontWeight="DemiBold"
+            Foreground="White"
+            Margin="10">
+            Ngày bắt đầu:
+        </TextBlock>
+        <TextBlock
+            Grid.Row="4"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            FontSize="15"
+            FontWeight="DemiBold"
+            Foreground="White"
+            Margin="10">
+            Giờ:
+        </TextBlock>
+        <TextBlock
+            Grid.Row="5"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            FontSize="15"
+            FontWeight="DemiBold"
+            Foreground="White"
+            Margin="10">
+            Phút:
+        </TextBlock>
+        <CheckBox x:Name="check_remind"
+            Grid.Row="6"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            FontSize="15"
+            Margin="15"
+            FontWeight="DemiBold">
+            Nhắc tôi khi đến lúc
+        </CheckBox>
+        <Grid
+            Grid.Column="1"
+            Grid.Row="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btn_ok"
+                Grid.Column="0"
+                Margin="20 10"
+                FontSize="20"
+                FontWeight="DemiBold"
+                Foreground="White"
+                Click="btn_ok_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF04E8FF" Offset="0"/>
+                        <GradientStop Color="#FF063DCF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                OK
+            </Button>
+            <Button x:Name="btn_cancel"
+            Grid.Column="1"
+            Margin="20 10"
+            FontSize="20"
+            FontWeight="DemiBold"
+            Foreground="White"
+                Click="btn_cancel_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF04E8FF" Offset="0"/>
+                        <GradientStop Color="#FF063DCF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                CANCEL
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

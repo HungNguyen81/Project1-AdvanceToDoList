@@ -1,0 +1,17 @@
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.csprojAssemblyReference.cache
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\MainWindow.g.cs
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\App.g.cs
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL_MarkupCompile.cache
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL_MarkupCompile.lref
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\bin\Debug\AdvanceTDL.exe.config
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\bin\Debug\AdvanceTDL.exe
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\bin\Debug\AdvanceTDL.pdb
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\MainWindow.baml
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.g.resources
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.Properties.Resources.resources
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.csproj.GenerateResource.cache
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.csproj.CoreCompileInputs.cache
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.exe
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.pdb
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\EditEvent.g.cs
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\EditEvent.baml
