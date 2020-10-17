@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdvanceTDL"
         mc:Ignorable="d"
-        Title="ADVANCE TODOLIST" Height="641" Width="881"
+        Title="ADVANCE TODOLIST" Height="677" Width="931"
         WindowStartupLocation="CenterScreen"
         Icon="icTDL.ico"
         Closing="Window_Closing">
@@ -67,22 +67,21 @@
                     </TextBlock>
                 </StackPanel>
                 <Border Width="120"
-                        Height="40"
+                        Height="43"
                         Grid.Row="1"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
-                        Margin="5"
+                        Margin="62,0,61,17"
                         CornerRadius="20"
                         BorderBrush="White"
-                        BorderThickness="2">
+                        BorderThickness="3">
                     <Button x:Name="btn_stop"
                         Style="{StaticResource MyButton}"
                         Click="btn_stop_Click"
                         Content="STOP APP" 
                         FontSize="20"
                         FontWeight="DemiBold"
-                        Foreground="White"
-                        Width="120">
+                        Foreground="White">
                     </Button>
                 </Border>
             </Grid>
@@ -308,13 +307,13 @@
                 </Border>
 
                 <Border x:Name="grid_edit"
-                    BorderBrush="red"
                     BorderThickness="2"
                     Margin="5">
                     <Grid 
-                    Height="140"
+                    Height="200"
                     Margin="0">
                         <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
@@ -369,12 +368,38 @@
                                 Click="btn_del_Click"
                         >XOÁ SỰ KIỆN</Button>
                         </Border>
+                        <Border
+                        Height="50"
+                        CornerRadius="15"
+                        Margin="5"
+                        Grid.Row="2"
+                        BorderBrush="Beige"
+                        BorderThickness="1">
+                            <Border.Background>
+                                <LinearGradientBrush 
+                                EndPoint="0,1" 
+                                StartPoint="1,0">
+                                    <GradientStop Color="#FF0D47E2"/>
+                                    <GradientStop Color="#FF0BF3C9" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Button
+                                Style="{StaticResource MyButton}"
+                                x:Name="btn_miss"
+                                FontWeight="DemiBold"
+                                Padding="10"
+                                FontSize="20"
+                                Foreground="White"
+                                Cursor="Hand"
+                                Click="btn_miss_Click"
+                        >BỎ QUA SỰ KIỆN</Button>
+                        </Border>
                     </Grid>
                 </Border>
             </StackPanel>
         </Border>
         <Calendar HorizontalAlignment="Center" 
-                  Margin="33,0,35,57" 
+                  Margin="33,0,35,73" 
                   MouseDoubleClick="Calendar_MouseDoubleClick"
                   VerticalAlignment="Bottom" 
                   Height="165" Width="182"/>

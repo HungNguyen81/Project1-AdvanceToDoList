@@ -45,15 +45,16 @@
                 Grid.Row="2"
                 MouseDoubleClick="txt_edit_motaSK_MouseDoubleClick">
             </TextBox>
-            <DatePicker
+        <DatePicker
                 x:Name="date_edit"
                 Margin="15"
                 Grid.Column="1"
                 Grid.Row="3">
-            </DatePicker>
+        </DatePicker>
             <ComboBox
                 x:Name="cb_gio"
                 Margin="15"
+                
                 Grid.Column="1"
                 Grid.Row="4">
             </ComboBox>

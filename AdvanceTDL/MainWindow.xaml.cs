@@ -1,7 +1,9 @@
 ﻿using AdvanceTDL;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
@@ -17,6 +19,19 @@ namespace AdvanceTDL
     /// </summary>
     public partial class MainWindow : Window
     {
+        public enum myConsts
+        {
+            I_TENSK = 0,
+            I_MOTA = 1,
+            I_NGAY = 2,
+            I_GIO = 3,
+            I_ID = 4,
+            I_PAST = 5,
+            I_REMIND = 6,
+            NUM_ATTR_DATA = 7
+        }
+        const int SK_HOMNAY = 0;
+        const int SK_NGAYMAI = 1;
         public static int Stt;
         private StringBuilder csv;
         public static Button btn_Current_Focus;
@@ -24,33 +39,36 @@ namespace AdvanceTDL
         string startupPath;
         DispatcherTimer dispatcherTimer;
 
-        DateTime testTime = new DateTime(2020, 10, 5, 9, 13, 0);
-        private static bool a = true;
-        public const int NUM_ATTR_DATA = 7;  //1. Name  2. Des  3. Date  4.Time  5. id  6. isPast  7. isRemind
+        private static DateTime testTime = new DateTime(2020, 10, 17, 14, 49, 0);  
+        private static bool isPlayed = false;
+
+        //0. Name  1. Des  2. Date  3.Time  4. id  5. isPast  6. isRemind
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
-            if(DateTime.Compare(now.Date, testTime.Date) == 0 && now.Hour == testTime.Hour && now.Minute == testTime.Minute && a == true)
+            UpdateEvents();
+            if (DateTime.Compare(now.Date, testTime.Date) == 0 && now.Hour == testTime.Hour 
+                && now.Minute == testTime.Minute && isPlayed == false)
             {
                 startupPath = Environment.CurrentDirectory;
                 player = new MediaPlayer();
                 player.Open(new Uri("file://" + startupPath + "\\audio_thongbao.mp3"));
                 player.Play();
                 MessageBoxResult re = MessageBox.Show("Đã đến giờ thưa ngài !!!\n",
-                    "Sự kiện bắt đầu", MessageBoxButton.OK, MessageBoxImage.Information);
-                if(re == MessageBoxResult.OK)
+                    "Sự kiện bắt đầu", MessageBoxButton.OK, MessageBoxImage.Information); //start_winxp.mp3
+                if (re == MessageBoxResult.OK)
                 {
                     player.Stop();
                 }
-                a = false;
+                isPlayed = true;
             }
         }
         public MainWindow()
         {
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 30);
             dispatcherTimer.Start();
 
             InitializeComponent();
@@ -59,23 +77,10 @@ namespace AdvanceTDL
             InstallMeOnStartUp();
 
 
-            //player = new MediaPlayer();
-
-            //startupPath = Environment.CurrentDirectory;
-
-            //player.Open(new Uri("file://" + startupPath + "\\audio_thongbao.mp3"));
-            //player.Play();
-
-            //OpenFileDialog openFileDialog = new OpenFileDialog();
-            //openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
-            //if (openFileDialog.ShowDialog() == true)
-            //{
-            //    player.Open(new Uri(openFileDialog.FileName));
-            //    player.Play();
-            //}
-            //MessageBox.Show(Environment.CurrentDirectory);
-            //MessageBox.Show(DateTime.Now.ToString());
-            //MessageBox.Show(testTime.ToString());
+            startupPath = Environment.CurrentDirectory;
+            player = new MediaPlayer();
+            player.Open(new Uri("file://" + startupPath + "\\start_winxp.mp3"));
+            player.Play();
 
 
             System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
@@ -90,14 +95,6 @@ namespace AdvanceTDL
                     this.WindowState = WindowState.Normal;
                 };
         }
-
-        //protected override void OnStateChanged(EventArgs e)
-        //{
-        //    if (WindowState == WindowState.Minimized)
-        //        this.Hide();
-
-        //    base.OnStateChanged(e);
-        //}
 
         private void InstallMeOnStartUp()
         {
@@ -156,10 +153,8 @@ namespace AdvanceTDL
             btn_del.Background = null;
             btn_edit.BorderBrush = null;
             btn_del.BorderBrush = null;
-            datePicker.SelectedDateFormat = DatePickerFormat.Long;
-            //myWindow.Icon = new BitmapImage(new Uri("/VBDAdvertisement;icon.png"));
+            datePicker.SelectedDateFormat = DatePickerFormat.Long;            
         }
-
         private void StoreData(int id, string tenSK, string motaSK, DateTime date, string isPast, string isRemind)
         {
             string newLine = string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}",
@@ -170,40 +165,58 @@ namespace AdvanceTDL
             File.WriteAllText("id.csv", (id+1) + "");
             csv.Clear();
         }
-
-
+        private int isNearEvents(DateTime date)
+        {
+            DateTime today = DateTime.Today;
+            if(date.Month == today.Month && date.Year == today.Year)
+            {
+                if (date.Day - today.Day == 0) return SK_HOMNAY;
+                if (date.Day - today.Day == 1) return SK_NGAYMAI;
+            }
+            return -1;
+        }
         private void Add_Event(string id, string TenSK, string MotaSK, DateTime date, int Gio, int Phut, string isPast, string isRemind)
         {
             Border border = new Border();
             Button btn = new Button();
             Canvas canvas = new Canvas();
-            TextBlock txTenSK = new TextBlock();
-            TextBlock txMoTaSK = new TextBlock();
-            TextBlock txNgay = new TextBlock();
-            TextBlock txGio = new TextBlock();
-            TextBlock event_id = new TextBlock();
-            TextBlock event_isPast = new TextBlock();
-            TextBlock event_isRemind = new TextBlock();
+            TextBlock txTenSK = new TextBlock();            // 0 -> Tên sk
+            TextBlock txMoTaSK = new TextBlock();           // 1 -> Mô tả sk
+            TextBlock txNgay = new TextBlock();             // 2 -> Ngày
+            TextBlock txGio = new TextBlock();              // 3 -> Giờ
+            TextBlock event_id = new TextBlock();           // 4 -> ID sk
+            TextBlock event_isPast = new TextBlock();       // 5 -> Đã qua hay chưa
+            TextBlock event_isRemind = new TextBlock();     // 6 -> có nhắc nhở không
 
             event_id.Text = id;
             event_id.Visibility = Visibility.Hidden;
             event_isPast.Text = isPast;                             // isPast = 0: Sự kiện chưa xảy ra, isPast = 1: sự kiện đã xảy ra
             event_isPast.Visibility = Visibility.Hidden;
             event_isRemind.Text = isRemind;                           // isRemind = 0: không nhắc lịch, isRemind = 1: có nhắc lịch
-            event_isRemind.Visibility = Visibility.Hidden;
-            
+            event_isRemind.Visibility = Visibility.Hidden;            
 
             border.BorderThickness = new Thickness(0);
-            border.Background = Brushes.White;
-            if (isPast.Equals("1"))
+
+            if (isNearEvents(date) == SK_HOMNAY)
+            {
+                border.Background = Brushes.DarkOrange;
+            }
+            else if(isNearEvents(date) == SK_NGAYMAI)
+            {
+                border.Background = Brushes.Yellow;
+            }
+            else
+            {
+                border.Background = Brushes.White;
+            }
+            if (isPast.Equals("1"))   // Nếu sk đã qua thì Opacity = 0.2, Focusable = false
             {
                 border.Opacity = 0.2f;
             }
             else
             {
                 border.Opacity = 0.5f;
-            }
-            
+            }            
             border.Margin = new Thickness(5, 5, 5, 0);
             border.CornerRadius = new CornerRadius(15);
             border.BorderBrush = null;
@@ -221,8 +234,10 @@ namespace AdvanceTDL
             }
             else
             {
-                btn_edit.IsEnabled = false;
-                btn.Focusable = false;
+                btn.GotFocus += new RoutedEventHandler(onGotFocus_Pass_Event);
+                btn.LostFocus += new RoutedEventHandler(onLossFocus_Pass_Event);
+                //btn_edit.IsEnabled = false;
+                //btn.Focusable = false;
             }
             btn.Foreground = Brushes.DarkViolet;
 
@@ -276,26 +291,10 @@ namespace AdvanceTDL
             btn.BorderBrush = null;
             border.Child = btn;
             pnlSuKien.Children.Add(border);
-            scroll_sukien.ScrollToEnd();
+            //scroll_sukien.ScrollToEnd();
             btn_Current_Focus = btn;
         }
-
-
-        private void UpdateEvents()
-        {
-            string[] lines = File.ReadAllLines("data.csv");
-            if (lines.Length > 1)
-            {
-                foreach (string line in lines)
-                {
-                    //Stt++;
-                    string[] data = line.Split('\t');
-                    Add_Event(data[0], data[1], data[2], new DateTime(int.Parse(data[6]),int.Parse(data[5]), int.Parse(data[4])), 
-                        int.Parse(data[7]), int.Parse(data[8]), data[9], data[10]);
-                }
-            }
-
-        }
+    
 
         #region ADD EVENTS
 
@@ -334,19 +333,19 @@ namespace AdvanceTDL
                 }
                 Phut = cb_minute12.SelectedIndex;
             }
-
-
             name = (txtTenSuKien.Text == "") ? "UNNAMED EVENT" : txtTenSuKien.Text;
             des = (txtMota.Text == "") ? "Không có mô tả" : txtMota.Text.Trim();
 
             date = (DateTime)datePicker.SelectedDate;
+            date = new DateTime(date.Year, date.Month, date.Day, Gio, Phut, 0);
 
-            if (DateTime.Compare(date, DateTime.Today) >= 0)
+            if (DateTime.Compare(date, DateTime.Now) >= 0)
             {
                 if (!IsDuplicate(name, des, date.Year, date.Month, date.Day, Gio, Phut))
                 {
                     Add_Event(Stt + "", name, des, date, Gio, Phut, "0", remind);
-                    StoreData(Stt++, name, des, new DateTime(date.Year, date.Month, date.Day, Gio, Phut, 0), "0", remind);
+                    StoreData(Stt++, name, des, date, "0", remind);
+                    UpdateEvents();
                 }
                 else
                 {
@@ -355,7 +354,8 @@ namespace AdvanceTDL
             }
             else
             {
-                MessageBox.Show("Bạn cần phải chọn ngày trong tương lai ! \n Hôm nay là : " + DateTime.Today.ToString("dd/MM/yyyy"),
+                MessageBox.Show("Bạn cần phải chọn ngày giờ trong tương lai ! \nHôm nay là : " + DateTime.Today.ToString("dd/MM/yyyy") +
+                    "\nGiờ hiện tại: " + DateTime.Now.ToString("hh:mm:ss"),
                     "Hey hey ...", MessageBoxButton.OK, MessageBoxImage.Warning);
                 datePicker.SelectedDate = DateTime.Today;
             }
@@ -391,9 +391,20 @@ namespace AdvanceTDL
         private void onGotFocus_event(object sender, RoutedEventArgs e)
         {
             btn_edit.IsEnabled = true;
+            btn_miss.IsEnabled = true;
             Button btn = (Button)sender;
             Border b = (Border)btn.Parent;
-            b.Background = Brushes.Yellow;
+            b.Background = Brushes.Aqua;
+            btn_Current_Focus = btn;
+            grid_edit.Visibility = Visibility.Visible;
+        }
+        private void onGotFocus_Pass_Event(object sender, RoutedEventArgs e)
+        {
+            btn_edit.IsEnabled = false;
+            btn_miss.IsEnabled = false;
+            Button btn = (Button)sender;
+            Border b = (Border)btn.Parent;
+            b.Background = Brushes.Cyan;
             btn_Current_Focus = btn;
 
             grid_edit.Visibility = Visibility.Visible;
@@ -401,15 +412,41 @@ namespace AdvanceTDL
         private void onLossFocus_event(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            Border b = (Border)btn.Parent;
-            b.Background = Brushes.White;
+            Border border = (Border)btn.Parent;
+            Canvas c = (Canvas)btn.Content;
+            int i = 0;
+            TextBlock[] t = new TextBlock[(int)myConsts.NUM_ATTR_DATA];
+            foreach(object o in c.Children)
+            {
+                t[i++] = (TextBlock)o;
+            }
+            string[] d = t[(int)myConsts.I_NGAY].Text.Split(',');
+            string[] d1 = d[1].Split('/');
+            DateTime date = new DateTime(int.Parse(d1[2]), int.Parse(d1[1]), int.Parse(d1[0]));
+            
+            if (isNearEvents(date) == SK_HOMNAY)
+            {
+                border.Background = Brushes.DarkOrange;
+            }
+            else if (isNearEvents(date) == SK_NGAYMAI)
+            {
+                border.Background = Brushes.Yellow;
+            }
+            else
+            {
+                border.Background = Brushes.White;
+            }
         }
-
+        private void onLossFocus_Pass_Event(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            Border border = (Border)btn.Parent;
+            border.Background = Brushes.DarkOrange;           
+        }
         private void input_tenSuKien_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             txtTenSuKien.Text = "";
         }
-
         private void Radio_24_Click(object sender, RoutedEventArgs e)
         {
             grid_24.Visibility = Visibility.Visible;
@@ -420,28 +457,23 @@ namespace AdvanceTDL
             grid_12.Visibility = Visibility.Visible;
             grid_24.Visibility = Visibility.Collapsed;
         }
-
         private void btn_add_MouseEnter(object sender, MouseEventArgs e)
         {
             Button btn = (Button)sender;
             btn.BorderBrush = null;
         }
-
         private void Calendar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             MessageBox.Show(sender.ToString());
         }
-
         private void txtMota_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             txtMota.Text = "";
         }
-
         private void btn_edit_Click(object sender, RoutedEventArgs e)
         {
             OpenEditWindow();
         }
-
         private void btn_del_Click(object sender, RoutedEventArgs e)
         {
             Border b = (Border)btn_Current_Focus.Parent;
@@ -453,14 +485,14 @@ namespace AdvanceTDL
             if (re == MessageBoxResult.Yes)
             {
                 Canvas c = ((Canvas)btn_Current_Focus.Content);
-                TextBlock[] id = new TextBlock[NUM_ATTR_DATA];
+                TextBlock[] id = new TextBlock[(int)myConsts.NUM_ATTR_DATA];
                 int k = 0;
                 foreach (object o in c.Children)
                 {
                     id[k++] = (TextBlock)o;
                 }
 
-                int id_num = int.Parse(id[4].Text);
+                int id_num = int.Parse(id[(int)myConsts.I_ID].Text);
 
                 StringBuilder sb = new StringBuilder();
                 string[] lines = File.ReadAllLines("data.csv");
@@ -495,7 +527,6 @@ namespace AdvanceTDL
                             }
                         }
                     }
-
                     File.WriteAllText("data.csv", sb.ToString());
                 }
                 else if (lines.Length == 1)
@@ -505,18 +536,176 @@ namespace AdvanceTDL
                 }
             }
         }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
             this.Hide();
         }
-
         private void btn_stop_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
+        private void btn_miss_Click(object sender, RoutedEventArgs e)
+        {
+            // Nếu sk đã qua thì Opacity = 0.2, isEnable = false, Focusable = false
+            Canvas c = (Canvas)btn_Current_Focus.Content;
+            Border b = (Border)btn_Current_Focus.Parent;
+            TextBlock[] texts = new TextBlock[(int)myConsts.NUM_ATTR_DATA];
+            int i = 0;
+            foreach(object o in c.Children)
+            {
+                texts[i] = (TextBlock)o;
+                i++;
+            }
+            b.Opacity = 0.2f;
+            btn_Current_Focus.Focusable = false;
+            texts[(int)myConsts.I_PAST].Text = "1";
+            string[] lines = File.ReadAllLines("data.csv");
+            UpdateData(texts[(int)myConsts.I_ID].Text, (int)myConsts.I_PAST);
+        }
+        private void UpdateData(string id, int indexOfItem)
+        {
+            string[] lines = File.ReadAllLines("data.csv");
+            if (lines.Length > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                string temp = null;
+                foreach (string line in lines)
+                {
+                    string[] data = line.Split('\t');
+                    switch (indexOfItem)
+                    {
+                        case (int)myConsts.I_PAST:
+                            if (data[0].Equals(id))
+                            {
+                                data[9] = "1";
+                                temp = string.Join("\t", data);
+                            }
+                            break;
+                        case -1:        // Kiểm tra sự kiện đã xảy ra;
+                            DateTime date = new DateTime(int.Parse(data[6]), int.Parse(data[5]),
+                                int.Parse(data[4]), int.Parse(data[7]), int.Parse(data[8]), 0);
+                            if (data[9].Equals("0") && DateTime.Compare(DateTime.Now, date) >= 0)
+                            {
+                                data[9] = "1";
+                                sb.AppendLine(string.Join("\t", data));                                
+                            } else
+                            {
+                                sb.AppendLine(line);
+                            }
+                            break;
+                    }
+                }
+                if(temp != null)
+                {
+                    sb.AppendLine(temp);
+                    foreach(string line in lines)
+                    {
+                        string[] data = line.Split('\t');
+                        if (data[0].Equals(id) == false)
+                        {
+                            sb.AppendLine(line);
+                        }                      
+                    }
+                    File.WriteAllText("data.csv", sb.ToString());
+                    UpdateID();
+                    if(indexOfItem != -1) UpdateEvents();
+                } 
+                else if(indexOfItem == -1)
+                {
+                    File.WriteAllText("data.csv", sb.ToString());
+                }
+            }
+        }
+        private void UpdateID()   
+        {
+            int num = 0;
+            string[] lines = File.ReadAllLines("data.csv");
+            string[] ids = File.ReadAllLines("id.csv");
+            foreach(string id in ids)
+            {
+                num = int.Parse(id);
+            }
+            if(lines.Length > 1)
+            {
+                StringBuilder sb = new StringBuilder();
+                int newId = 0;
+                foreach(string line in lines)
+                {
+                    string[] data = line.Split('\t');                    
+                    if(newId < num)
+                    {
+                        data[0] = "" + newId;
+                        newId++;
+                        sb.AppendLine(string.Join("\t", data));
+                    }
+                }
+                File.WriteAllText("data.csv", sb.ToString());
+                File.WriteAllText("id.csv", newId+"");
+            }
+        }
+        private void SortEvent()
+        {
+            string[] lines = File.ReadAllLines("data.csv");
+            if (lines.Length > 0)
+            {
+                List<infoSK> listSK_passed = new List<infoSK>();
+                List<infoSK> listSK_coming = new List<infoSK>();
+                StringBuilder sb = new StringBuilder();
+                DateTime[] date = new DateTime[lines.Length];
+
+                foreach (string line in lines)
+                {
+                    string[] data = line.Split('\t');
+                    int i = 0;
+
+                    date[i] = new DateTime(int.Parse(data[6]), int.Parse(data[5]), int.Parse(data[4]), int.Parse(data[7]), int.Parse(data[8]), 0);
+                    if (data[9].Equals("1"))
+                    {
+                        listSK_passed.Add(new infoSK(data[0], data[1], data[2], date[i++], data[9], data[10]));
+                    }
+                    else
+                    {
+                        listSK_coming.Add(new infoSK(data[0], data[1], data[2], date[i++], data[9], data[10]));
+                    }
+                }
+                listSK_passed.Sort();
+                listSK_coming.Sort();
+                foreach (infoSK s in listSK_coming)
+                {
+                    sb.AppendLine(s.ToString());
+                }
+                foreach (infoSK s in listSK_passed)
+                {
+                    sb.AppendLine(s.ToString());
+                }                
+                File.WriteAllText("data.csv", sb.ToString());
+                UpdateID();
+            }
+        }
+        private void UpdateEvents()
+        {
+            try
+            {
+                pnlSuKien.Children.Clear();
+            }
+            catch (Exception e)
+            { }
+
+            UpdateData(null, -1);
+            SortEvent();
+            string[] lines = File.ReadAllLines("data.csv");
+            if (lines.Length > 0)
+            {
+                foreach (string line in lines)
+                {                    
+                    string[] data = line.Split('\t');
+                    Add_Event(data[0], data[1], data[2], new DateTime(int.Parse(data[6]), int.Parse(data[5]), int.Parse(data[4])),
+                        int.Parse(data[7]), int.Parse(data[8]), data[9], data[10]);                    
+                }
+            }
+        }
         #endregion
     }
 }
