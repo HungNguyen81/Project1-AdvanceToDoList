@@ -15,8 +15,10 @@ namespace AdvanceTDL
         private Button btnSender;
         private string remind;
         private bool isSave;
-        public EditEvent()
+        private MainWindow main;
+        public EditEvent(MainWindow main)
         {
+            this.main = main;
             isSave = false;
             InitializeComponent();
             Init_EditWindow();
@@ -70,6 +72,7 @@ namespace AdvanceTDL
                 if (isSave)
                 {
                     SaveEdited();
+                    main.UpdateEvents();
                 }
             }
             else
@@ -98,7 +101,7 @@ namespace AdvanceTDL
                 string m = (cb_phut.SelectedIndex < 10) ? "0" + cb_phut.SelectedIndex : "" + cb_phut.SelectedIndex;
                 children[3].Text = h + ":" + m;
 
-                int id_num = int.Parse(children[4].Text);
+                int id_num = int.Parse(children[(int)MainWindow.myConsts.I_ID].Text);
 
                 StringBuilder sb = new StringBuilder();
                 string[] lines = File.ReadAllLines("data.csv");
@@ -116,7 +119,7 @@ namespace AdvanceTDL
                         {
                             string newLine = string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}",
                                         id_num, children[0].Text, children[1].Text, date.DayOfWeek, date.Day,
-                                        date.Month, date.Year, date.Hour, date.Minute, s[9], remind);
+                                        date.Month, date.Year, h, m, s[9], remind);
                             sb.AppendLine(newLine);
                         }
                         else

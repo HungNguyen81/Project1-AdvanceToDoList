@@ -40,5 +40,10 @@ namespace AdvanceTDL
                 + date.Month + '\t' + date.Year + '\t' + date.Hour + '\t' + date.Minute + '\t'
                 + IsPast + '\t' + IsRemind;
         }
+
+        public string GetInform()
+        {
+            return "Tên sự kiện: " + TenSK + "\n" + "Mô tả: " + MotaSK + "\n";
+        }
     }
 }

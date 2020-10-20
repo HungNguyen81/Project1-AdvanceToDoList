@@ -28,54 +28,90 @@ namespace AdvanceTDL
             I_ID = 4,
             I_PAST = 5,
             I_REMIND = 6,
-            NUM_ATTR_DATA = 7
+            NUM_ATTR_DATA = 8,
+            DELTA_SEC = 1,
+            MOTA_LENGTH = 30
         }
         const int SK_HOMNAY = 0;
         const int SK_NGAYMAI = 1;
-        public static int Stt;
+        public static int Stt;          // Id của sự kiện, cũng là số thứ tự ô thông tin trong bảng các sự kiện
         private StringBuilder csv;
         public static Button btn_Current_Focus;
         private MediaPlayer player;
         string startupPath;
         DispatcherTimer dispatcherTimer;
 
-        private static DateTime testTime = new DateTime(2020, 10, 17, 14, 49, 0);  
-        private static bool isPlayed = false;
+        // Lưu giữ thời gian của sự kiện gần nhất với thời điểm hiện tại
+        static infoSK inf;
 
-        //0. Name  1. Des  2. Date  3.Time  4. id  5. isPast  6. isRemind
+        // Trạng thái thông báo sự kiện, TRUE khi đã có sk được reminded, FALSE khi thay đổi giá trị *testTime*
+        private static bool isPlayed = false;
+        private static bool isUpdated = false;
+
+        // 0. Name  1. Des  2. Date  3.Time  4. id  5. isPast  6. isRemind
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
-            UpdateEvents();
-            if (DateTime.Compare(now.Date, testTime.Date) == 0 && now.Hour == testTime.Hour 
-                && now.Minute == testTime.Minute && isPlayed == false)
+            if(!isUpdated) UpdateEvents();
+            if (DateTime.Compare(now.Date, inf.Date.Date) == 0 && now.Hour == inf.Date.Hour 
+                && now.Minute == inf.Date.Minute && isPlayed == false)
             {
                 startupPath = Environment.CurrentDirectory;
                 player = new MediaPlayer();
                 player.Open(new Uri("file://" + startupPath + "\\audio_thongbao.mp3"));
                 player.Play();
-                MessageBoxResult re = MessageBox.Show("Đã đến giờ thưa ngài !!!\n",
-                    "Sự kiện bắt đầu", MessageBoxButton.OK, MessageBoxImage.Information); //start_winxp.mp3
+
+                // Khi đã thông báo remind thì có nghĩa là tăng thêm 1 sự kiện passed => cần cập nhật
+                isUpdated = false;
+                MessageBoxResult re = MessageBox.Show("Đã đến giờ !!!\n",
+                    "THÔNG BÁO", MessageBoxButton.OK, MessageBoxImage.Information); //start_winxp.mp3
                 if (re == MessageBoxResult.OK)
                 {
                     player.Stop();
                 }
                 isPlayed = true;
             }
+            else
+            {
+                if(!(DateTime.Compare(now.Date, inf.Date.Date) == 0 
+                    && now.Hour == inf.Date.Hour
+                    && now.Minute == inf.Date.Minute))
+                {
+                    isPlayed = false;
+                    SetupInf();
+                }
+            }
+        }
+        private void SetupInf()
+        {
+            string[] lines = File.ReadAllLines("data.csv");
+            foreach (string line in lines)
+            {
+                string[] data = line.Split('\t');
+                if (data[10].Equals("1"))
+                {
+                    inf = new infoSK(data[0], data[1], data[2],
+                        new DateTime(int.Parse(data[6]), int.Parse(data[5]), int.Parse(data[4]),
+                        int.Parse(data[7]), int.Parse(data[8]), 0), "0", "1");
+                    return;
+                }
+            }
         }
         public MainWindow()
         {
-            dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 30);
-            dispatcherTimer.Start();
-
             InitializeComponent();
             Init();
             UpdateEvents();
+            SetupInf();
             InstallMeOnStartUp();
 
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+
+            // Lặp lại sau mỗi DELTA_SEC (giây)
+            dispatcherTimer.Interval = new TimeSpan(0, 0, (int)myConsts.DELTA_SEC);
+            dispatcherTimer.Start();
 
             startupPath = Environment.CurrentDirectory;
             player = new MediaPlayer();
@@ -153,7 +189,7 @@ namespace AdvanceTDL
             btn_del.Background = null;
             btn_edit.BorderBrush = null;
             btn_del.BorderBrush = null;
-            datePicker.SelectedDateFormat = DatePickerFormat.Long;            
+            datePicker.SelectedDateFormat = DatePickerFormat.Long;
         }
         private void StoreData(int id, string tenSK, string motaSK, DateTime date, string isPast, string isRemind)
         {
@@ -212,6 +248,7 @@ namespace AdvanceTDL
             if (isPast.Equals("1"))   // Nếu sk đã qua thì Opacity = 0.2, Focusable = false
             {
                 border.Opacity = 0.2f;
+                border.Background = Brushes.DarkOrange;
             }
             else
             {
@@ -236,10 +273,8 @@ namespace AdvanceTDL
             {
                 btn.GotFocus += new RoutedEventHandler(onGotFocus_Pass_Event);
                 btn.LostFocus += new RoutedEventHandler(onLossFocus_Pass_Event);
-                //btn_edit.IsEnabled = false;
-                //btn.Focusable = false;
             }
-            btn.Foreground = Brushes.DarkViolet;
+            btn.Foreground = Brushes.DarkViolet;            
 
             Canvas.SetBottom(txNgay, 10);
             Canvas.SetRight(txNgay, 170);
@@ -252,13 +287,22 @@ namespace AdvanceTDL
             txTenSK.Margin = new Thickness(10, 5, 0, 0);
             txTenSK.TextWrapping = TextWrapping.WrapWithOverflow;
             txTenSK.Width = 200;
-            txTenSK.Height = 30;
+            txTenSK.Height = 30;            
 
-            txMoTaSK.Width = 300;
-            if (MotaSK.Length > 43)
+            TextBlock txMore = new TextBlock();
+            txMore.Text = "...";
+            txMore.FontSize = 20;
+            txMore.FontWeight = FontWeights.Bold;
+            txMore.Margin = new Thickness(180, 5, 0, 0);
+            txMore.Height = 30;
+            txMore.Visibility = Visibility.Collapsed;            
+
+            txMoTaSK.Width = 200;
+            if (MotaSK.Length > (int)myConsts.MOTA_LENGTH)
             {
-                canvas.Height = btn.Height = 110 + 30 * (int) (MotaSK.Length / 43);
+                canvas.Height = btn.Height = 110 + 30 * (int) (MotaSK.Length / (int)myConsts.MOTA_LENGTH);
             }
+            if(TenSK.Length > 40) txMore.Visibility = Visibility.Visible;
             txMoTaSK.Text = MotaSK;
             txMoTaSK.TextWrapping = TextWrapping.Wrap;
             txMoTaSK.Margin = new Thickness(10, 40, 0, 0);
@@ -278,13 +322,14 @@ namespace AdvanceTDL
             txGio.FontWeight = FontWeights.SemiBold;
             txGio.HorizontalAlignment = HorizontalAlignment.Left;
 
-            canvas.Children.Add(txTenSK);
-            canvas.Children.Add(txMoTaSK);
-            canvas.Children.Add(txNgay);
-            canvas.Children.Add(txGio);
-            canvas.Children.Add(event_id);
-            canvas.Children.Add(event_isPast);
-            canvas.Children.Add(event_isRemind);
+            canvas.Children.Add(txTenSK);           // 0
+            canvas.Children.Add(txMoTaSK);          // 1
+            canvas.Children.Add(txNgay);            // 2
+            canvas.Children.Add(txGio);             // 3
+            canvas.Children.Add(event_id);          // 4
+            canvas.Children.Add(event_isPast);      // 5
+            canvas.Children.Add(event_isRemind);    // 6
+            canvas.Children.Add(txMore);            // 7
 
             btn.Content = canvas;
 
@@ -293,6 +338,8 @@ namespace AdvanceTDL
             pnlSuKien.Children.Add(border);
             //scroll_sukien.ScrollToEnd();
             btn_Current_Focus = btn;
+
+            isUpdated = false;
         }
     
 
@@ -376,14 +423,6 @@ namespace AdvanceTDL
         #endregion
 
         #region Xử lý sự kiện
-        private void OpenEditWindow()
-        {
-            Border b = (Border)btn_Current_Focus.Parent;
-            b.Background = Brushes.White;
-            EditEvent ed = new EditEvent();
-            ed.ShowDialog();
-            grid_edit.Visibility = Visibility.Collapsed;
-        }
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             OpenEditWindow();
@@ -441,7 +480,7 @@ namespace AdvanceTDL
         {
             Button btn = (Button)sender;
             Border border = (Border)btn.Parent;
-            border.Background = Brushes.DarkOrange;           
+            border.Background = Brushes.DarkOrange;
         }
         private void input_tenSuKien_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -473,6 +512,14 @@ namespace AdvanceTDL
         private void btn_edit_Click(object sender, RoutedEventArgs e)
         {
             OpenEditWindow();
+        }
+        private void OpenEditWindow()
+        {
+            Border b = (Border)btn_Current_Focus.Parent;
+            b.Background = Brushes.White;
+            EditEvent ed = new EditEvent(this);
+            ed.ShowDialog();
+            grid_edit.Visibility = Visibility.Collapsed;
         }
         private void btn_del_Click(object sender, RoutedEventArgs e)
         {
@@ -561,8 +608,8 @@ namespace AdvanceTDL
             b.Opacity = 0.2f;
             btn_Current_Focus.Focusable = false;
             texts[(int)myConsts.I_PAST].Text = "1";
-            string[] lines = File.ReadAllLines("data.csv");
             UpdateData(texts[(int)myConsts.I_ID].Text, (int)myConsts.I_PAST);
+            isUpdated = false;
         }
         private void UpdateData(string id, int indexOfItem)
         {
@@ -682,9 +729,10 @@ namespace AdvanceTDL
                 }                
                 File.WriteAllText("data.csv", sb.ToString());
                 UpdateID();
+                isUpdated = false;
             }
         }
-        private void UpdateEvents()
+        public void UpdateEvents()
         {
             try
             {
@@ -705,6 +753,7 @@ namespace AdvanceTDL
                         int.Parse(data[7]), int.Parse(data[8]), data[9], data[10]);                    
                 }
             }
+            isUpdated = true;
         }
         #endregion
     }
