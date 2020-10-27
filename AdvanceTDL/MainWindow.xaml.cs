@@ -59,7 +59,7 @@ namespace AdvanceTDL
             {
                 startupPath = Environment.CurrentDirectory;
                 player = new MediaPlayer();
-                player.Open(new Uri("file://" + startupPath + "\\audio_thongbao.mp3"));
+                player.Open(new Uri("file://" + startupPath + "\\remind_audio.mp3")); //audio_thongbao.mp3
                 player.Play();
 
                 // Khi đã thông báo remind thì có nghĩa là tăng thêm 1 sự kiện passed => cần cập nhật
