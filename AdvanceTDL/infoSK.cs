@@ -24,13 +24,13 @@ namespace AdvanceTDL
             this.IsRemind = IsRemind;
         }
 
-        public DateTime Date
+        public DateTime getDate
         {
             get { return date; }
         }
         int IComparable<infoSK>.CompareTo(infoSK other)
         {
-            return DateTime.Compare(this.Date, other.Date);
+            return DateTime.Compare(this.getDate, other.getDate);
         }
 
         public override string ToString()
@@ -43,7 +43,7 @@ namespace AdvanceTDL
 
         public string GetInform()
         {
-            return "Tên sự kiện: " + TenSK + "\n" + "Mô tả: " + MotaSK + "\n";
+            return "Tên sự kiện: " + TenSK + "\n" + "Vị trí: " + MotaSK + "\n";
         }
     }
 }

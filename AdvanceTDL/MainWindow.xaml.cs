@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace AdvanceTDL
@@ -28,9 +29,11 @@ namespace AdvanceTDL
             I_ID = 4,
             I_PAST = 5,
             I_REMIND = 6,
-            NUM_ATTR_DATA = 8,
+            NUM_ATTR_DATA = 9,
             DELTA_SEC = 1,
-            MOTA_LENGTH = 30
+            MOTA_LENGTH = 30,
+            UPDATE_PASSED = -1,
+            UPDATE_MISSED = -2
         }
         const int SK_HOMNAY = 0;
         const int SK_NGAYMAI = 1;
@@ -38,7 +41,7 @@ namespace AdvanceTDL
         private StringBuilder csv;
         public static Button btn_Current_Focus;
         private MediaPlayer player;
-        string startupPath;
+        static string startupPath;
         DispatcherTimer dispatcherTimer;
 
         // Lưu giữ thời gian của sự kiện gần nhất với thời điểm hiện tại
@@ -53,50 +56,68 @@ namespace AdvanceTDL
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
-            if(!isUpdated) UpdateEvents();
-            if (DateTime.Compare(now.Date, inf.Date.Date) == 0 && now.Hour == inf.Date.Hour 
-                && now.Minute == inf.Date.Minute && isPlayed == false)
+            if (!isUpdated) UpdateEvents();
+            if (inf != null)
             {
-                startupPath = Environment.CurrentDirectory;
-                player = new MediaPlayer();
-                player.Open(new Uri("file://" + startupPath + "\\remind_audio.mp3")); //audio_thongbao.mp3
-                player.Play();
+                if (DateTime.Compare(now.Date, inf.getDate.Date) == 0 && now.Hour == inf.getDate.Hour
+                && now.Minute == inf.getDate.Minute && isPlayed == false)
+                {
+                    startupPath = Environment.CurrentDirectory;
+                    player = new MediaPlayer();
+                    player.Open(new Uri("file://" + startupPath + "\\remind_audio.mp3")); //audio_thongbao.mp3
+                    player.Play();
 
-                // Khi đã thông báo remind thì có nghĩa là tăng thêm 1 sự kiện passed => cần cập nhật
-                isUpdated = false;
-                MessageBoxResult re = MessageBox.Show("Đã đến giờ !!!\n",
-                    "THÔNG BÁO", MessageBoxButton.OK, MessageBoxImage.Information); //start_winxp.mp3
-                if (re == MessageBoxResult.OK)
-                {
-                    player.Stop();
+                    // Khi đã thông báo remind thì có nghĩa là tăng thêm 1 sự kiện passed => cần cập nhật
+                    isUpdated = false;
+                    MessageBoxResult re = MessageBox.Show("Đã đến giờ !!!\n",
+                        "THÔNG BÁO", MessageBoxButton.OK, MessageBoxImage.Information); //start_winxp.mp3
+                    if (re == MessageBoxResult.OK)
+                    {
+                        player.Stop();
+                    }
+                    isPlayed = true;
                 }
-                isPlayed = true;
-            }
-            else
-            {
-                if(!(DateTime.Compare(now.Date, inf.Date.Date) == 0 
-                    && now.Hour == inf.Date.Hour
-                    && now.Minute == inf.Date.Minute))
+                else
                 {
-                    isPlayed = false;
-                    SetupInf();
+                    if (!(DateTime.Compare(now.Date, inf.getDate.Date) == 0
+                        && now.Hour == inf.getDate.Hour
+                        && now.Minute == inf.getDate.Minute))
+                    {
+                        isPlayed = false;
+                        SetupInf();
+                    }
                 }
             }
+            //else SetupInf();
         }
         private void SetupInf()
         {
-            string[] lines = File.ReadAllLines("data.csv");
-            foreach (string line in lines)
+            try
             {
-                string[] data = line.Split('\t');
-                if (data[10].Equals("1"))
+                string[] lines = File.ReadAllLines("data.csv");
+                if(lines.Length > 0)
                 {
-                    inf = new infoSK(data[0], data[1], data[2],
-                        new DateTime(int.Parse(data[6]), int.Parse(data[5]), int.Parse(data[4]),
-                        int.Parse(data[7]), int.Parse(data[8]), 0), "0", "1");
-                    return;
+                    foreach (string line in lines)
+                    {
+                        string[] data = line.Split('\t');
+                        if (data[10].Equals("1") && data[9].Equals("0"))
+                        {
+                            inf = new infoSK(data[0], data[1], data[2],
+                                new DateTime(int.Parse(data[6]), int.Parse(data[5]), int.Parse(data[4]),
+                                int.Parse(data[7]), int.Parse(data[8]), 0), "0", "1");
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    inf = new infoSK("", "", "", DateTime.Now, "", "");
                 }
             }
+            catch(Exception exp)
+            {
+                MessageBox.Show("Error when opening file!\n" + exp.Message);
+            }            
         }
         public MainWindow()
         {
@@ -106,15 +127,17 @@ namespace AdvanceTDL
             SetupInf();
             InstallMeOnStartUp();
 
+            scroll_sukien.ScrollToEnd();
+
+            player = new MediaPlayer();
+            startupPath = Environment.CurrentDirectory;
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
 
             // Lặp lại sau mỗi DELTA_SEC (giây)
             dispatcherTimer.Interval = new TimeSpan(0, 0, (int)myConsts.DELTA_SEC);
-            dispatcherTimer.Start();
-
-            startupPath = Environment.CurrentDirectory;
-            player = new MediaPlayer();
+            dispatcherTimer.Start();            
+            
             player.Open(new Uri("file://" + startupPath + "\\start_winxp.mp3"));
             player.Play();
 
@@ -158,7 +181,7 @@ namespace AdvanceTDL
             int[] hours12 = new int[12];
             int[] hours24 = new int[24];
             int[] mins = new int[60];
-            String[] Am_Pm = { "AM", "PM" };
+            string[] Am_Pm = { "AM", "PM" };
             for (int i = 0; i < 60; i++)
             {
                 mins[i] = i;
@@ -223,6 +246,11 @@ namespace AdvanceTDL
             TextBlock event_id = new TextBlock();           // 4 -> ID sk
             TextBlock event_isPast = new TextBlock();       // 5 -> Đã qua hay chưa
             TextBlock event_isRemind = new TextBlock();     // 6 -> có nhắc nhở không
+            Image img = new Image();
+            string dir = "file://" + Directory.GetCurrentDirectory() + "\\check.png";
+            img.Source = new BitmapImage(new Uri(dir));
+            img.Width = 20;
+            img.Height = 20;
 
             event_id.Text = id;
             event_id.Visibility = Visibility.Hidden;
@@ -245,15 +273,7 @@ namespace AdvanceTDL
             {
                 border.Background = Brushes.White;
             }
-            if (isPast.Equals("1"))   // Nếu sk đã qua thì Opacity = 0.2, Focusable = false
-            {
-                border.Opacity = 0.2f;
-                border.Background = Brushes.DarkOrange;
-            }
-            else
-            {
-                border.Opacity = 0.5f;
-            }            
+
             border.Margin = new Thickness(5, 5, 5, 0);
             border.CornerRadius = new CornerRadius(15);
             border.BorderBrush = null;
@@ -262,25 +282,38 @@ namespace AdvanceTDL
             canvas.Width = 500;
             btn.Background = null;
             btn.Cursor = Cursors.Hand;
-            
-            if (isPast.Equals("0"))
+
+            if (isPast.Equals("0"))   // Nếu sk đã qua thì Opacity = 0.2, Focusable = false
             {
+                border.Opacity = 0.8f;
                 btn.GotFocus += new RoutedEventHandler(onGotFocus_event);
                 btn.LostFocus += new RoutedEventHandler(onLossFocus_event);
                 btn.MouseDoubleClick += new MouseButtonEventHandler(OnMouseDoubleClick);
+                img.Visibility = Visibility.Hidden;
             }
             else
             {
+                border.Opacity = 0.8f;
+                border.Background = Brushes.Gray;
+                btn.Foreground = Brushes.White;
                 btn.GotFocus += new RoutedEventHandler(onGotFocus_Pass_Event);
-                btn.LostFocus += new RoutedEventHandler(onLossFocus_Pass_Event);
-            }
-            btn.Foreground = Brushes.DarkViolet;            
+                btn.LostFocus += new RoutedEventHandler(onLossFocus_Pass_Event);                
+                img.Visibility = Visibility.Visible;
+
+                if (isPast.Equals("2"))
+                {
+                    string miss_dir = "file://" + Directory.GetCurrentDirectory() + "\\miss.png";
+                    img.Source = new BitmapImage(new Uri(miss_dir));
+                }
+            }           
 
             Canvas.SetBottom(txNgay, 10);
             Canvas.SetRight(txNgay, 170);
             Canvas.SetTop(txGio, 5);
             Canvas.SetRight(txGio, 170);
-            
+            Canvas.SetTop(img, 10);
+            Canvas.SetRight(img, 220);
+
             txTenSK.Text = TenSK;
             txTenSK.FontSize = 20;
             txTenSK.FontWeight = FontWeights.Bold;
@@ -295,7 +328,7 @@ namespace AdvanceTDL
             txMore.FontWeight = FontWeights.Bold;
             txMore.Margin = new Thickness(180, 5, 0, 0);
             txMore.Height = 30;
-            txMore.Visibility = Visibility.Collapsed;            
+            txMore.Visibility = Visibility.Collapsed;         
 
             txMoTaSK.Width = 200;
             if (MotaSK.Length > (int)myConsts.MOTA_LENGTH)
@@ -329,7 +362,8 @@ namespace AdvanceTDL
             canvas.Children.Add(event_id);          // 4
             canvas.Children.Add(event_isPast);      // 5
             canvas.Children.Add(event_isRemind);    // 6
-            canvas.Children.Add(txMore);            // 7
+            canvas.Children.Add(txMore);            // 7            
+            canvas.Children.Add(img);               // tick - passed events
 
             btn.Content = canvas;
 
@@ -393,6 +427,7 @@ namespace AdvanceTDL
                     Add_Event(Stt + "", name, des, date, Gio, Phut, "0", remind);
                     StoreData(Stt++, name, des, date, "0", remind);
                     UpdateEvents();
+                    SetupInf();
                 }
                 else
                 {
@@ -457,7 +492,10 @@ namespace AdvanceTDL
             TextBlock[] t = new TextBlock[(int)myConsts.NUM_ATTR_DATA];
             foreach(object o in c.Children)
             {
-                t[i++] = (TextBlock)o;
+                if (i < (int)myConsts.NUM_ATTR_DATA - 1)
+                {
+                    t[i++] = (TextBlock)o;
+                }                            
             }
             string[] d = t[(int)myConsts.I_NGAY].Text.Split(',');
             string[] d1 = d[1].Split('/');
@@ -480,7 +518,7 @@ namespace AdvanceTDL
         {
             Button btn = (Button)sender;
             Border border = (Border)btn.Parent;
-            border.Background = Brushes.DarkOrange;
+            border.Background = Brushes.Gray;
         }
         private void input_tenSuKien_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -521,10 +559,13 @@ namespace AdvanceTDL
             ed.ShowDialog();
             grid_edit.Visibility = Visibility.Collapsed;
         }
+
+        /* DELETE EVENT'S INFORMATION */
+
         private void btn_del_Click(object sender, RoutedEventArgs e)
         {
             Border b = (Border)btn_Current_Focus.Parent;
-            b.Background = Brushes.White;
+            //b.Background = Brushes.White;
             grid_edit.Visibility = Visibility.Collapsed;
             MessageBoxResult re = MessageBox.Show("Bạn có muốn xoá sự kiện này ?", "ĐỢI CHÚT ...",
                 MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
@@ -532,20 +573,32 @@ namespace AdvanceTDL
             if (re == MessageBoxResult.Yes)
             {
                 Canvas c = ((Canvas)btn_Current_Focus.Content);
-                TextBlock[] id = new TextBlock[(int)myConsts.NUM_ATTR_DATA];
+                TextBlock[] id = new TextBlock[(int)myConsts.NUM_ATTR_DATA-1];
                 int k = 0;
                 foreach (object o in c.Children)
-                {
-                    id[k++] = (TextBlock)o;
+                {                    
+                    if(k < (int)myConsts.NUM_ATTR_DATA-1) id[k++] = (TextBlock)o;
                 }
 
                 int id_num = int.Parse(id[(int)myConsts.I_ID].Text);
-
                 StringBuilder sb = new StringBuilder();
+
                 string[] lines = File.ReadAllLines("data.csv");
+                try
+                {
+                    pnlSuKien.Children.RemoveAt(id_num);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
                 if (lines.Length > 1)
                 {
                     bool isFound = false;
+                    string[] ids = File.ReadAllLines("id.csv");
+                    Stt = int.Parse(ids[0]);
+
                     foreach (string line in lines)
                     {
                         string[] s = line.Split('\t');
@@ -553,15 +606,7 @@ namespace AdvanceTDL
                         {
                             isFound = true;
                             Stt--;
-                            File.WriteAllText("id.csv", Stt + "");
-                            try
-                            {
-                                pnlSuKien.Children.RemoveAt(id_num);
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message);
-                            }
+                            File.WriteAllText("id.csv", Stt + "");                            
                         }
                         else
                         {
@@ -581,6 +626,7 @@ namespace AdvanceTDL
                     File.WriteAllText("data.csv", "");
                     File.WriteAllText("id.csv", "0");
                 }
+                UpdateEvents();
             }
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -602,13 +648,16 @@ namespace AdvanceTDL
             int i = 0;
             foreach(object o in c.Children)
             {
-                texts[i] = (TextBlock)o;
-                i++;
+                if(i < (int)myConsts.NUM_ATTR_DATA-1)
+                {
+                    texts[i] = (TextBlock)o;
+                    i++;
+                }
             }
             b.Opacity = 0.2f;
             btn_Current_Focus.Focusable = false;
-            texts[(int)myConsts.I_PAST].Text = "1";
-            UpdateData(texts[(int)myConsts.I_ID].Text, (int)myConsts.I_PAST);
+            texts[(int)myConsts.I_PAST].Text = "2";
+            UpdateData(texts[(int)myConsts.I_ID].Text, (int)myConsts.UPDATE_MISSED);
             isUpdated = false;
         }
         private void UpdateData(string id, int indexOfItem)
@@ -630,7 +679,15 @@ namespace AdvanceTDL
                                 temp = string.Join("\t", data);
                             }
                             break;
-                        case -1:        // Kiểm tra sự kiện đã xảy ra;
+                        case (int)myConsts.UPDATE_MISSED:   //-2
+                            if (data[0].Equals(id))
+                            {
+                                data[9] = "2";
+                                temp = string.Join("\t", data);
+                            }
+                            break;
+                        // Kiểm tra sự kiện đã xảy ra;
+                        case (int)myConsts.UPDATE_PASSED:   // -1   
                             DateTime date = new DateTime(int.Parse(data[6]), int.Parse(data[5]),
                                 int.Parse(data[4]), int.Parse(data[7]), int.Parse(data[8]), 0);
                             if (data[9].Equals("0") && DateTime.Compare(DateTime.Now, date) >= 0)
@@ -697,8 +754,10 @@ namespace AdvanceTDL
             string[] lines = File.ReadAllLines("data.csv");
             if (lines.Length > 0)
             {
-                List<infoSK> listSK_passed = new List<infoSK>();
-                List<infoSK> listSK_coming = new List<infoSK>();
+                //List<infoSK> listSK_passed = new List<infoSK>();
+                //List<infoSK> listSK_coming = new List<infoSK>();
+                List<infoSK> listSK = new List<infoSK>();
+
                 StringBuilder sb = new StringBuilder();
                 DateTime[] date = new DateTime[lines.Length];
 
@@ -707,41 +766,26 @@ namespace AdvanceTDL
                     string[] data = line.Split('\t');
                     int i = 0;
 
-                    date[i] = new DateTime(int.Parse(data[6]), int.Parse(data[5]), int.Parse(data[4]), int.Parse(data[7]), int.Parse(data[8]), 0);
-                    if (data[9].Equals("1"))
-                    {
-                        listSK_passed.Add(new infoSK(data[0], data[1], data[2], date[i++], data[9], data[10]));
-                    }
-                    else
-                    {
-                        listSK_coming.Add(new infoSK(data[0], data[1], data[2], date[i++], data[9], data[10]));
-                    }
+                    date[i] = new DateTime(int.Parse(data[6]), int.Parse(data[5]), int.Parse(data[4]), int.Parse(data[7]), int.Parse(data[8]), 0);                   
+                    listSK.Add(new infoSK(data[0], data[1], data[2], date[i++], data[9], data[10]));
                 }
-                listSK_passed.Sort();
-                listSK_coming.Sort();
-                foreach (infoSK s in listSK_coming)
+                //listSK_passed.Sort();
+                //listSK_coming.Sort();
+                listSK.Sort();
+                foreach(infoSK s in listSK)
                 {
                     sb.AppendLine(s.ToString());
-                }
-                foreach (infoSK s in listSK_passed)
-                {
-                    sb.AppendLine(s.ToString());
-                }                
+                }      
                 File.WriteAllText("data.csv", sb.ToString());
                 UpdateID();
                 isUpdated = false;
             }
         }
         public void UpdateEvents()
-        {
-            try
-            {
-                pnlSuKien.Children.Clear();
-            }
-            catch (Exception e)
-            { }
+        {                
+            if(pnlSuKien.Children != null) pnlSuKien.Children.Clear();            
 
-            UpdateData(null, -1);
+            UpdateData(null, (int)myConsts.UPDATE_PASSED);
             SortEvent();
             string[] lines = File.ReadAllLines("data.csv");
             if (lines.Length > 0)

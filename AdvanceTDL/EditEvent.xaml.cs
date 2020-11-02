@@ -43,8 +43,11 @@ namespace AdvanceTDL
             int k = 0;
             foreach (object o in c.Children)
             {
-                TextBlock t = (TextBlock)o;
-                texts[k++] = t.Text;
+                if (k < (int)MainWindow.myConsts.NUM_ATTR_DATA - 1)
+                {
+                    TextBlock t = (TextBlock)o;
+                    texts[k++] = t.Text;
+                }                
             }
             txt_edit_tenSK.Text = texts[(int)MainWindow.myConsts.I_TENSK];
             txt_edit_motaSK.Text = texts[(int)MainWindow.myConsts.I_MOTA];
@@ -91,7 +94,7 @@ namespace AdvanceTDL
                 int k = 0;
                 foreach (object o in c.Children)
                 {
-                    children[k++] = (TextBlock)o;
+                    if(k < (int)MainWindow.myConsts.NUM_ATTR_DATA-1) children[k++] = (TextBlock)o;
                 }
 
                 children[0].Text = (txt_edit_tenSK.Text == "") ? "UNNAMED EVENT" : txt_edit_tenSK.Text;

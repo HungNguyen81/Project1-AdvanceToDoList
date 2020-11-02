@@ -269,7 +269,7 @@
                     FontWeight="Bold"
                     Foreground="White"
                     Margin="9 0 0 5">
-                    <Bold>Mô TẢ SỰ KIỆN</Bold> :
+                    <Bold>VỊ TRÍ</Bold> :
                 </TextBlock>
                 <TextBox x:Name="txtMota"
                     Height="50"
