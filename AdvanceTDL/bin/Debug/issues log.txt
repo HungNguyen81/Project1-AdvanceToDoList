@@ -1,0 +1,31 @@
+
+					issue #1
+
+1. Sắp xếp sk theo thời gian diễn ra		<<new>>			___ OK ____
+
+2. Tô màu sk ngày hôm nay và ngày mai		<<new>>			___ OK ____
+
+3. Cho phép miss (bỏ qua) sk			<<new>>			___ OK ____
+
+___________________________________________________________________________________
+					issue #2
+
+4. Sự kiện luôn theo thứ tự, 
+   phải xem rõ đc các sk đã qua 		<<fix>>			___ OK ____
+
+5. Có thể chọn luôn nổi (Gadget)  		<<new>>			___ ...
+
+6. Chọn thời gian nhắc 				<<new>> 		___ ...
+   <<5ph, 10ph, 30ph, 1h>>			
+		
+7. Sk lặp lại <<theo tuần>>			<<new>>			___ ...
+
+8. Nhập địa điểm <<Thay cho phần mô tả>>	<<fix>>			___ OK ____
+
+
+9.  Custom remind dialog			<<thêm>>		___ ...
+
+___________________________________________________________________________________
+					issue #3
+				     
+10.
