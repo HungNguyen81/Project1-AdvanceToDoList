@@ -1,0 +1,2 @@
+start "" AdvanceTDL.exe
+exit
