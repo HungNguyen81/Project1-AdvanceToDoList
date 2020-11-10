@@ -60,6 +60,12 @@ namespace AdvanceTDL
             int phut = int.Parse(gioPhut[1]);
             cb_gio.SelectedIndex = gio;
             cb_phut.SelectedIndex = phut;
+            cb_time2remind.SelectedIndex = int.Parse(texts[(int)MainWindow.myConsts.I_TIME_REMIND]);
+            if(texts[(int)MainWindow.myConsts.I_IS_LOOP].Equals("0"))
+                chk_loop.IsChecked = false;
+            else
+                chk_loop.IsChecked = true;
+
             txb_Id.Text = "ID: " + texts[(int)MainWindow.myConsts.I_ID];
 
             if (texts[(int)MainWindow.myConsts.I_REMIND] == "1") check_remind.IsChecked = true;
@@ -120,9 +126,10 @@ namespace AdvanceTDL
                         string[] s = line.Split('\t');
                         if (int.Parse(s[0]) == id_num)
                         {
-                            string newLine = string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}",
+                            int isLoop = (chk_loop.IsChecked == true) ? 1 : 0;
+                            string newLine = string.Format(MainWindow.strDataFormat,
                                         id_num, children[0].Text, children[1].Text, date.DayOfWeek, date.Day,
-                                        date.Month, date.Year, h, m, s[9], remind);
+                                        date.Month, date.Year, h, m, s[9], remind, cb_time2remind.SelectedIndex, isLoop);
                             sb.AppendLine(newLine);
                         }
                         else

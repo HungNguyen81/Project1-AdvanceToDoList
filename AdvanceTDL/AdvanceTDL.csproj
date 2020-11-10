@@ -57,6 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RemindDialog.xaml.cs">
+      <DependentUpon>RemindDialog.xaml</DependentUpon>
+    </Compile>
     <Page Include="EditEvent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -73,13 +76,26 @@
       <DependentUpon>EditEvent.xaml</DependentUpon>
     </Compile>
     <Compile Include="infoSK.cs" />
+    <Compile Include="MainWindow.xaml.CapNhatDuLieu.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="myGadget.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RemindDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PriorityQueue.cs" />
+    <Compile Include="MainWindow.xaml.ThemSuKien.cs" />
+    <Compile Include="MainWindow.xaml.XuLySuKien.cs" />
+    <Compile Include="myGadget.xaml.cs">
+      <DependentUpon>myGadget.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -110,6 +126,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icTDL.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdvanceTDL-Gadget\AdvanceTDL-Gadget.csproj">
+      <Project>{ee7d6a32-b6c1-4da5-a8a8-2f97f28194de}</Project>
+      <Name>AdvanceTDL-Gadget</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvanceTDL", "AdvanceTDL\AdvanceTDL.csproj", "{1832122E-5891-40B4-B33B-04855C827DE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvanceTDL-Gadget", "AdvanceTDL-Gadget\AdvanceTDL-Gadget.csproj", "{EE7D6A32-B6C1-4DA5-A8A8-2F97F28194DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1832122E-5891-40B4-B33B-04855C827DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1832122E-5891-40B4-B33B-04855C827DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1832122E-5891-40B4-B33B-04855C827DE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE7D6A32-B6C1-4DA5-A8A8-2F97F28194DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE7D6A32-B6C1-4DA5-A8A8-2F97F28194DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE7D6A32-B6C1-4DA5-A8A8-2F97F28194DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE7D6A32-B6C1-4DA5-A8A8-2F97F28194DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdvanceTDL"
         mc:Ignorable="d"
-        Title="Sửa Thông Tin Sự Kiện" Height="473.761" Width="457.088"
+        Title="Sửa Thông Tin Sự Kiện" Height="613.978" Width="457.088"
         Icon="/logo_HUST.png"
         WindowStartupLocation="CenterScreen"
         Closing="EditWindow_Closing">
@@ -21,6 +21,8 @@
             <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -47,11 +49,11 @@
             </TextBox>
         <DatePicker
                 x:Name="date_edit"
-                Margin="15"
+                Margin="15 20 15 15"
                 Grid.Column="1"
                 Grid.Row="3">
         </DatePicker>
-            <ComboBox
+           <ComboBox
                 x:Name="cb_gio"
                 Margin="15"
                 
@@ -64,11 +66,54 @@
                 Grid.Column="1"
                 Grid.Row="5">
             </ComboBox>
+        <TextBlock
+            Grid.Row="6"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            FontSize="15"
+            FontWeight="DemiBold"
+            Foreground="White"
+            Margin="10">
+            Báo trước:
+        </TextBlock>
+        <ComboBox
+            x:Name="cb_time2remind"
+            Grid.Column="1"
+            Grid.Row="6"
+            Margin="15">
+            <ComboBoxItem>1 phút</ComboBoxItem>
+            <ComboBoxItem>5 phút</ComboBoxItem>
+            <ComboBoxItem>10 phút</ComboBoxItem>
+            <ComboBoxItem>15 phút</ComboBoxItem>
+            <ComboBoxItem>30 phút</ComboBoxItem>
+            <ComboBoxItem>1 giờ</ComboBoxItem>
+            <ComboBoxItem>Không</ComboBoxItem>
+        </ComboBox>
+        <CheckBox
+            x:Name="chk_loop"
+            Content="Lặp lại"
+            Grid.Row="7"
+            Grid.Column="1"
+            Margin="15 22 15 15"
+            FontSize="15"
+            FontWeight="DemiBold">
+        </CheckBox>
+        <TextBlock
+            Grid.Row="7"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            FontSize="15"
+            FontWeight="DemiBold"
+            Foreground="White"
+            Margin="10">
+            Lặp lại mỗi tuần:
+        </TextBlock>
+        
             <TextBlock x:Name="txb_Id"
                        Margin="15"
                        FontSize="50"
                        Grid.Column="0"
-                       Grid.Row="6"
+                       Grid.Row="8"
                        Grid.RowSpan="2">ID
             </TextBlock>
 
@@ -142,7 +187,7 @@
             Phút:
         </TextBlock>
         <CheckBox x:Name="check_remind"
-            Grid.Row="6"
+            Grid.Row="8"
             Grid.Column="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Left"
@@ -153,7 +198,7 @@
         </CheckBox>
         <Grid
             Grid.Column="1"
-            Grid.Row="7">
+            Grid.Row="9">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>

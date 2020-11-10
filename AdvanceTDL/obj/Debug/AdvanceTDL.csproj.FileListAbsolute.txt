@@ -15,3 +15,11 @@ C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.exe
 C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.pdb
 C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\EditEvent.g.cs
 C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\EditEvent.baml
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\myGadget.g.cs
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\myGadget.baml
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\RemindDialog.g.cs
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\RemindDialog.baml
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\bin\Debug\AdvanceTDL-Gadget.exe
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\bin\Debug\AdvanceTDL-Gadget.pdb
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\bin\Debug\AdvanceTDL-Gadget.exe.config
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL\obj\Debug\AdvanceTDL.csproj.CopyComplete

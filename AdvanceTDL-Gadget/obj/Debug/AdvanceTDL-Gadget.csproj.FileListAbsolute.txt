@@ -1,0 +1,15 @@
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\bin\Debug\AdvanceTDL-Gadget.exe.config
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\bin\Debug\AdvanceTDL-Gadget.exe
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\bin\Debug\AdvanceTDL-Gadget.pdb
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\MainWindow.g.cs
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\App.g.cs
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\AdvanceTDL-Gadget_MarkupCompile.cache
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\AdvanceTDL-Gadget_MarkupCompile.lref
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\MainWindow.baml
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\AdvanceTDL-Gadget.g.resources
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\AdvanceTDL_Gadget.Properties.Resources.resources
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\AdvanceTDL-Gadget.csproj.GenerateResource.cache
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\AdvanceTDL-Gadget.csproj.CoreCompileInputs.cache
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\AdvanceTDL-Gadget.exe
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\AdvanceTDL-Gadget.pdb
+C:\Users\nguye\source\repos\AdvanceTDL\AdvanceTDL-Gadget\obj\Debug\AdvanceTDL-Gadget.csprojAssemblyReference.cache
