@@ -23,7 +23,7 @@ namespace AdvanceTDL
             Border b = (Border)btn.Parent;
             b.Background = Brushes.Aqua;
             btn_Current_Focus = btn;
-            grid_edit.Visibility = Visibility.Visible;
+            //grid_edit.Visibility = Visibility.Visible;
         }
         private void onGotFocus_Pass_Event(object sender, RoutedEventArgs e)
         {
@@ -34,7 +34,7 @@ namespace AdvanceTDL
             b.Background = Brushes.Cyan;
             btn_Current_Focus = btn;
 
-            grid_edit.Visibility = Visibility.Visible;
+            //grid_edit.Visibility = Visibility.Visible;
         }
         private void onLossFocus_event(object sender, RoutedEventArgs e)
         {
@@ -94,7 +94,49 @@ namespace AdvanceTDL
         }
         private void Calendar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show(sender.ToString());
+            //MessageBox.Show(sender.ToString());
+            pnlSuKien.Children.Clear();
+            Calendar c = (Calendar)sender;
+            DateTime date = (DateTime)c.SelectedDate;
+            string[] lines = File.ReadAllLines("data.csv");
+
+            if(lines.Length > 0)
+            {
+                foreach (string line in lines)
+                {
+                    string[] data = line.Split(',');
+                    int ngay = int.Parse(data[(int)DATA.NGAY]);
+                    int thang = int.Parse(data[(int)DATA.THANG]);
+                    int nam = int.Parse(data[(int)DATA.NAM]);
+                    if (date.Day == ngay && date.Month == thang && date.Year == nam)
+                    {
+                        Add_Event(data[0], data[1], data[2], new DateTime(int.Parse(data[6]), int.Parse(data[5]), int.Parse(data[4])),
+                            int.Parse(data[7]), int.Parse(data[8]), data[9], data[10], data[11], data[12], data[13], data[14], false);
+                        //MessageBox.Show("Đã tìm thấy !");
+                    }
+                }
+                if (pnlSuKien.Children == null)
+                {
+                    MessageBox.Show("Không tìm thấy !");
+                }
+                Button btn = new Button();
+                btn.Content = "BACK";
+                btn.Margin = new Thickness(20);
+                btn.BorderThickness = new Thickness(3);
+                btn.BorderBrush = Brushes.White;                
+                btn.Background = Brushes.Transparent;
+                btn.Foreground = Brushes.White;
+                btn.Click += new RoutedEventHandler(btnBackClick);
+                pnlSuKien.Children.Add(btn);
+            } 
+            else
+            {
+                MessageBox.Show("Không tìm thấy !");
+            }
+        }
+        private void btnBackClick(object sender, RoutedEventArgs e)
+        {
+            UpdateEvents();
         }
         private void txtMota_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -110,21 +152,22 @@ namespace AdvanceTDL
             b.Background = Brushes.White;
             EditEvent ed = new EditEvent(this);
             ed.ShowDialog();
-            grid_edit.Visibility = Visibility.Collapsed;
+            //grid_edit.Visibility = Visibility.Collapsed;
         }
 
         /* DELETE EVENT'S INFORMATION */
 
         private void btn_del_Click(object sender, RoutedEventArgs e)
         {
-            Border b = (Border)btn_Current_Focus.Parent;
+            //Border b = (Border)btn_Current_Focus.Parent;
             //b.Background = Brushes.White;
-            grid_edit.Visibility = Visibility.Collapsed;
+            //grid_edit.Visibility = Visibility.Collapsed;
             MessageBoxResult re = MessageBox.Show("Bạn có muốn xoá sự kiện này ?", "ĐỢI CHÚT ...",
                 MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 
             if (re == MessageBoxResult.Yes)
             {
+                if (mGadget != null) mGadget.Update(pnlSuKien);
                 Canvas c = ((Canvas)btn_Current_Focus.Content);
                 TextBlock[] id = new TextBlock[(int)myConsts.NUM_ATTR_DATA - 1];
                 int k = 0;
@@ -154,7 +197,7 @@ namespace AdvanceTDL
 
                     foreach (string line in lines)
                     {
-                        string[] s = line.Split('\t');
+                        string[] s = line.Split(',');
                         if (int.Parse(s[0]) == id_num)
                         {
                             isFound = true;
@@ -168,7 +211,7 @@ namespace AdvanceTDL
                             else
                             {
                                 s[0] = (id_num++) + "";
-                                sb.AppendLine(string.Join("\t", s));
+                                sb.AppendLine(string.Join(",", s));
                             }
                         }
                     }
@@ -216,9 +259,9 @@ namespace AdvanceTDL
 
         private void chk_Gadget_Checked(object sender, RoutedEventArgs e)
         {
-            mGadget = new AdvanceTDL_Gadget.MainWindow(pnlSuKien, this);
+            mGadget = new AdvanceTDL_Gadget.MainGadget(pnlSuKien, this);
             mGadget.Show();
-            File.WriteAllText("gadgetState.csv", "1");
+            File.WriteAllText("gadgetState.csv", "1");            
         }
 
         private void chk_Gadget_Unchecked(object sender, RoutedEventArgs e)
@@ -227,5 +270,34 @@ namespace AdvanceTDL
             File.WriteAllText("gadgetState.csv", "0");
         }
         #endregion
+
+
+        private void chk_remind_Checked(object sender, RoutedEventArgs e)
+        {
+            grid_TuyChonBaoTruoc.Visibility = Visibility.Visible;
+        }
+
+        private void chk_remind_Unchecked(object sender, RoutedEventArgs e)
+        {
+            grid_TuyChonBaoTruoc.Visibility = Visibility.Collapsed;
+        }
+
+        private void chk_loop_Checked(object sender, RoutedEventArgs e)
+        {
+            grid_TuyChonLap.Visibility = Visibility.Visible;
+        }
+
+        private void chk_loop_Unchecked(object sender, RoutedEventArgs e)
+        {
+            grid_TuyChonLap.Visibility = Visibility.Collapsed;
+        }
+        private void btnX_click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
     }
 }

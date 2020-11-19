@@ -11,7 +11,7 @@ namespace AdvanceTDL
     public partial class MainWindow
     {
         private void Add_Event(string id, string TenSK, string MotaSK, DateTime date, int Gio, 
-            int Phut, string isPast, string isRemind, string time2remind, string isLoop)
+            int Phut, string isPast, string isRemind, string time2remind, string isLoop, string typeOfLoop, string numOfLoop, bool needToUpdate)
         {
             Border border = new Border();
             Button btn = new Button();
@@ -25,7 +25,10 @@ namespace AdvanceTDL
             TextBlock event_isRemind = new TextBlock();     // 6 -> có nhắc nhở không
             TextBlock txTimeRm = new TextBlock();           // 7 -> 
             TextBlock txLoop = new TextBlock();             // 8 -> 
+            TextBlock txTypeLoop = new TextBlock();
+            TextBlock txNumLoop = new TextBlock();
             Image img = new Image();
+
             string dir = "file://" + Directory.GetCurrentDirectory() + "\\check.png";
             img.Source = new BitmapImage(new Uri(dir));
             img.Width = 20;
@@ -33,9 +36,13 @@ namespace AdvanceTDL
 
             event_id.Text = id;
             event_id.Visibility = Visibility.Hidden;
-            event_isPast.Text = isPast;                             // isPast = 0: Sự kiện chưa xảy ra, isPast = 1: sự kiện đã xảy ra
+
+            // isPast = 0: Sự kiện chưa xảy ra, isPast = 1: sự kiện đã xảy ra
+            event_isPast.Text = isPast;                             
             event_isPast.Visibility = Visibility.Hidden;
-            event_isRemind.Text = isRemind;                           // isRemind = 0: không nhắc lịch, isRemind = 1: có nhắc lịch
+
+            // isRemind = 0: không nhắc lịch, isRemind = 1: có nhắc lịch
+            event_isRemind.Text = isRemind;                                      
             event_isRemind.Visibility = Visibility.Hidden;
 
             border.BorderThickness = new Thickness(0);
@@ -55,7 +62,7 @@ namespace AdvanceTDL
 
             border.Margin = new Thickness(5, 5, 5, 0);
             border.CornerRadius = new CornerRadius(15);
-            border.BorderBrush = null;
+            border.BorderBrush = null;            
 
             canvas.Height = btn.Height = 90;
             canvas.Width = 500;
@@ -73,12 +80,13 @@ namespace AdvanceTDL
             else
             {
                 border.Opacity = 0.8f;
-                border.Background = Brushes.Gray;
+                border.Background = Brushes.BlueViolet;
                 btn.Foreground = Brushes.White;
                 btn.GotFocus += new RoutedEventHandler(onGotFocus_Pass_Event);
                 btn.LostFocus += new RoutedEventHandler(onLossFocus_Pass_Event);
                 img.Visibility = Visibility.Visible;
 
+                // isPast = 2 => sự kiện đã bị bỏ qua.
                 if (isPast.Equals("2"))
                 {
                     string miss_dir = "file://" + Directory.GetCurrentDirectory() + "\\miss.png";
@@ -87,11 +95,11 @@ namespace AdvanceTDL
             }
 
             Canvas.SetBottom(txNgay, 10);
-            Canvas.SetRight(txNgay, 170);
+            Canvas.SetRight(txNgay, 100);
             Canvas.SetTop(txGio, 5);
-            Canvas.SetRight(txGio, 170);
+            Canvas.SetRight(txGio, 100);
             Canvas.SetTop(img, 10);
-            Canvas.SetRight(img, 220);
+            Canvas.SetRight(img, 150);
 
             txTenSK.Text = TenSK;
             txTenSK.FontSize = 20;
@@ -139,6 +147,12 @@ namespace AdvanceTDL
 
             txLoop.Visibility = Visibility.Collapsed;
             txLoop.Text = isLoop;
+            
+            txTypeLoop.Visibility = Visibility.Collapsed;
+            txTypeLoop.Text = typeOfLoop;
+
+            txNumLoop.Visibility = Visibility.Collapsed;
+            txNumLoop.Text = numOfLoop;
 
             canvas.Children.Add(txTenSK);           // 0 -> Tên sự kiện
             canvas.Children.Add(txMoTaSK);          // 1 -> Vị trí
@@ -147,24 +161,25 @@ namespace AdvanceTDL
             canvas.Children.Add(event_id);          // 4 -> ID sự kiện <stt trong danh sách>
             canvas.Children.Add(event_isPast);      // 5 -> Trạng thái sự kiện đã qua/missed
             canvas.Children.Add(event_isRemind);    // 6 -> IsRemind?                        
-            canvas.Children.Add(txTimeRm);          // 7
-            canvas.Children.Add(txLoop);            // 8
+            canvas.Children.Add(txTimeRm);          // 7 -> Time to remind
+            canvas.Children.Add(txLoop);            // 8 -> isLoop?
+            canvas.Children.Add(txTypeLoop);        // 9 -> type of loop (theo tuần/tháng/năm)
+            canvas.Children.Add(txNumLoop);         // 10 -> số lần lặp
 
-            canvas.Children.Add(txMore);            // 9 -> Khi tên sự kiện quá dài
-            canvas.Children.Add(img);               // 10 -> tick - passed events
+            canvas.Children.Add(txMore);            // 11 -> Khi tên sự kiện quá dài
+            canvas.Children.Add(img);               // 12 -> tick - passed events
 
             btn.Content = canvas;
+            //border.Style = Resources["MyBorder"] as Style;
 
             btn.BorderBrush = null;
             border.Child = btn;
 
-            //gadget.pnlSuKien_gadget.Children.Add(border);
-
-            pnlSuKien.Children.Add(border);
+            pnlSuKien.Children.Add(border);            
             //scroll_sukien.ScrollToEnd();
             btn_Current_Focus = btn;
 
-            isUpdated = false;
+            isUpdated = !needToUpdate;
         }
 
 
@@ -172,36 +187,30 @@ namespace AdvanceTDL
 
         private void Btn_Add_Click(object sender, RoutedEventArgs e)
         {
-            string remind;
-            MessageBoxResult re = MessageBox.Show("Bạn có muốn được nhắc khi tới thời gian xảy ra sự kiện không ?", 
-                "Còn một bước để có thể thêm sự kiện", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-            if (re == MessageBoxResult.Yes)
-            {
-                remind = "1";
-            }
-            else if (re == MessageBoxResult.No)
-            {
-                remind = "0";
-            }
-            else return;
-            string name, des;
+            string remind, name, des;
             DateTime date;
             int Gio = 0, Phut = 0;
+            int time2remind;
+            string isLoop;
+            string typeOfLoop, numOfLoop;
+            if (chk_remind.IsChecked == true){
+                remind = "1";
+            } else { 
+                remind = "0"; 
+            }
 
-            if (radio_24.IsChecked == true)
-            {
+            if (radio_24.IsChecked == true){
                 Gio = cb_hour24.SelectedIndex;
                 Phut = cb_minute24.SelectedIndex;
-            }
-            else if (radio_12.IsChecked == true)
-            {
-                if (cb_AM_PM.SelectedIndex == 1)
-                {
-                    Gio = (cb_hour12.SelectedIndex + 13) % 24;
-                }
-                else
-                {
-                    Gio = cb_hour12.SelectedIndex + 1;
+            } else if (radio_12.IsChecked == true){
+                // PM
+                if (cb_AM_PM.SelectedIndex == 1){
+                    if(cb_hour12.SelectedIndex < 11) Gio = (cb_hour12.SelectedIndex + 13) % 24;
+                    else Gio = cb_hour12.SelectedIndex + 1;
+                // AM
+                } else {
+                    if (cb_hour12.SelectedIndex < 11) Gio = cb_hour12.SelectedIndex + 1;
+                    else Gio = (cb_hour12.SelectedIndex + 13) % 24;
                 }
                 Phut = cb_minute12.SelectedIndex;
             }
@@ -211,17 +220,31 @@ namespace AdvanceTDL
             date = (DateTime)datePicker.SelectedDate;
             date = new DateTime(date.Year, date.Month, date.Day, Gio, Phut, 0);
 
-            int time2remind = cb_time2remind.SelectedIndex;
-            string isLoop = "0";
-            if (chk_loop.IsChecked == true) 
-                isLoop = "1";            
+            time2remind = cb_time2remind.SelectedIndex;
+            
+            if (chk_loop.IsChecked == true)
+            {
+                isLoop = "1";
+
+                // index = 0 => lặp theo tuần
+                // index = 1 => lặp theo tháng
+                // index = 2 => lặp theo năm
+                typeOfLoop = "" + cb_loopType.SelectedIndex;
+                numOfLoop = "" + (cb_loopNum.SelectedIndex + 1);
+             }
+            else
+            {
+                isLoop = "0";
+                typeOfLoop = "0";
+                numOfLoop = "0";
+            }
             
             if (DateTime.Compare(date, DateTime.Now) >= 0)
             {
                 if (!IsDuplicate(name, des, date.Year, date.Month, date.Day, Gio, Phut))
                 {
-                    Add_Event(Stt + "", name, des, date, Gio, Phut, "0", remind,""+time2remind, isLoop);
-                    StoreData(Stt++, name, des, date, "0", remind, time2remind, isLoop);
+                    Add_Event(Stt + "", name, des, date, Gio, Phut, "0", remind,""+time2remind, isLoop, typeOfLoop, numOfLoop, true);
+                    StoreData(Stt++, name, des, date, "0", remind, time2remind, isLoop, typeOfLoop, numOfLoop);
                     UpdateEvents();
                     SetupInf();
                 }
@@ -245,7 +268,7 @@ namespace AdvanceTDL
             string[] lines = File.ReadAllLines("data.csv");
             foreach (string line in lines)
             {
-                string[] data = line.Split('\t');
+                string[] data = line.Split(',');
                 if (data[1] == name && data[2] == des && data[4] == Year + "" && data[5] == Month + ""
                     && data[6] == Day + "" && data[7] == Gio + "" && data[8] == Phut + "")
                     return true;

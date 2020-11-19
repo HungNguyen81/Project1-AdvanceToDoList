@@ -81,10 +81,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="myGadget.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="RemindDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -93,9 +89,6 @@
   <ItemGroup>
     <Compile Include="MainWindow.xaml.ThemSuKien.cs" />
     <Compile Include="MainWindow.xaml.XuLySuKien.cs" />
-    <Compile Include="myGadget.xaml.cs">
-      <DependentUpon>myGadget.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

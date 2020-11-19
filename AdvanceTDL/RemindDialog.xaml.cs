@@ -19,9 +19,18 @@ namespace AdvanceTDL
     /// </summary>
     public partial class RemindDialog : Window
     {
-        public RemindDialog()
+        public RemindDialog(infoSK inf)
         {
             InitializeComponent();
+            tx_tenSK.Text = "Sự kiện: " + inf.TenSK;
+            tx_thoigian.Text = inf.getTime();
+            tx_vitri.Text = "Vị trí: " + inf.MotaSK;
+        }
+
+        private void btn_OK_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.remindResult = true;
+            this.Close();
         }
     }
 }

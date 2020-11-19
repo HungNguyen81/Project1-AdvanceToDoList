@@ -13,7 +13,7 @@ ________________________________________________________________________________
 1. Sự kiện luôn theo thứ tự, 
    phải xem rõ đc các sk đã qua 		<<fix>>			___ OK ___
 
-2. Có thể chọn luôn nổi (Gadget)  		<<new>>			___ ...
+2. Có thể chọn luôn nổi (Gadget)  		<<new>>			___ OK ___
 
 3. Chọn thời gian nhắc 				<<new>> 		___ OK ___
 		<<1ph, 5ph, 10ph, ...>>
@@ -22,9 +22,18 @@ ________________________________________________________________________________
 
 5. Nhập địa điểm <<Thay cho phần mô tả>>	<<fix>>			___ OK ___
 
-6. Custom remind notice dialog    		<<thêm>>		___ ...
+6. Custom remind notice dialog    		<<thêm>>		___ OK ___
+
+7. Tìm kiếm sự kiện theo ngày			<<thêm>>		___ OK ___
 
 ___________________________________________________________________________________
 					issue #3
 				     
-1.
+1. Bổ sung chức năng lặp sự kiện		
+	Lặp theo tuần, tháng, năm					___ ...
+	Chọn số lần lặp							___ ...
+	Chọn thời gian kết thúc			<<fix>>			___ ...
+
+
+__________________________________________________________________________________
+					END

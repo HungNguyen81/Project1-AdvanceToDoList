@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdvanceTDL"
         mc:Ignorable="d"
-        Title="ADVANCE TODOLIST" Height="686" Width="933"
+        Title="ADVANCE TODOLIST" Height="702.833" Width="966.333"
         WindowStartupLocation="CenterScreen"
         Icon="icTDL.ico"
+        WindowStyle="None"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Closing="Window_Closing">
     <Window.InputBindings>
         <KeyBinding Modifiers="Control"
@@ -26,7 +28,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="0.8" />
+                                <Setter Property="Opacity" Value="0.5" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -36,29 +38,205 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="1.5*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="242*"></ColumnDefinition>
+            <ColumnDefinition Width="474*"></ColumnDefinition>
+            <ColumnDefinition Width="243*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="White" BorderThickness="2 2 5 2">
-            <Grid Grid.Column="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="593*"></RowDefinition>
+            <RowDefinition Height="62*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid
+            Margin="0 0 2 2"
+            Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                            <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                            <RotateTransform Angle="-384.677" CenterY="0.5" CenterX="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="#FFDB281C" Offset="0"/>
+                    <GradientStop Color="#FFEC630F" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border       
+                Grid.Column="2"
+                    CornerRadius="15"
+                    Margin="10"
+                    BorderBrush="Beige"
+                    BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush 
+                            EndPoint="0,1" 
+                            StartPoint="1,0">
+                        <LinearGradientBrush.RelativeTransform>
+                            <TransformGroup>
+                                <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                <RotateTransform Angle="-90" CenterY="0.5" CenterX="0.5"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </LinearGradientBrush.RelativeTransform>
+                        <GradientStop Color="#FF0D47E2"/>
+                        <GradientStop Color="#FF0BF3C9" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Button
+                        Style="{StaticResource MyButton}"
+                        Height="35"
+                        x:Name="btn_add"
+                        Click="Btn_Add_Click"
+                        MouseEnter="btn_add_MouseEnter"
+                        FontWeight="DemiBold"
+                        Padding="10"
+                        FontSize="20"
+                        Foreground="White"
+                        Cursor="Hand" Margin="0,3,-1,2"
+                        >THÊM</Button>
+            </Border>
+            <Border
+                Grid.Column="3"
+                            CornerRadius="15"
+                            Margin="10"
+                           
+                            BorderBrush="Beige"
+                            BorderThickness="1" Grid.ColumnSpan="1">
+                <Border.Background>
+                    <LinearGradientBrush 
+                                EndPoint="0,1" 
+                                StartPoint="1,0">
+                        <LinearGradientBrush.RelativeTransform>
+                            <TransformGroup>
+                                <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                <RotateTransform Angle="-90" CenterY="0.5" CenterX="0.5"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </LinearGradientBrush.RelativeTransform>
+                        <GradientStop Color="#FF0D47E2"/>
+                        <GradientStop Color="#FF0BF3C9" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Button
+                                Style="{StaticResource MyButton}"
+                                x:Name="btn_edit"
+                                FontWeight="DemiBold"
+                                Padding="10"
+                                FontSize="20"
+                                Foreground="White"
+                                Click="btn_edit_Click"
+                                Cursor="Hand"
+                                >SỬA</Button>
+            </Border>
+            <Border
+                        CornerRadius="15"
+                        Margin="10"
+                        Grid.Row="1"
+                        BorderBrush="Beige"
+                        BorderThickness="1"
+                Grid.Column="4">
+                <Border.Background>
+                    <LinearGradientBrush 
+                                EndPoint="0,1" 
+                                StartPoint="1,0">
+                        <LinearGradientBrush.RelativeTransform>
+                            <TransformGroup>
+                                <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                <RotateTransform Angle="-90" CenterY="0.5" CenterX="0.5"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </LinearGradientBrush.RelativeTransform>
+                        <GradientStop Color="#FF0D47E2"/>
+                        <GradientStop Color="#FF0BF3C9" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Button
+                                Style="{StaticResource MyButton}"
+                                x:Name="btn_del"
+                                FontWeight="DemiBold"
+                                Padding="10"
+                                FontSize="20"
+                                Foreground="White"
+                                Cursor="Hand"
+                                Click="btn_del_Click"
+                        >XOÁ</Button>
+            </Border>
+            <Border
+                Grid.Column="5"
+                        CornerRadius="15"
+                        Margin="10"
+                        Grid.Row="2"
+                        BorderBrush="Beige"
+                        BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush 
+                                EndPoint="0,1" 
+                                StartPoint="1,0">
+                        <LinearGradientBrush.RelativeTransform>
+                            <TransformGroup>
+                                <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                <RotateTransform Angle="-90" CenterY="0.5" CenterX="0.5"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </LinearGradientBrush.RelativeTransform>
+                        <GradientStop Color="#FF0D47E2"/>
+                        <GradientStop Color="#FF0BF3C9" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Button
+                                Style="{StaticResource MyButton}"
+                                x:Name="btn_miss"
+                                FontWeight="DemiBold"
+                                Padding="10"
+                                FontSize="20"
+                                Foreground="White"
+                                Cursor="Hand"
+                                Click="btn_miss_Click"
+                        >BỎ QUA</Button>
+            </Border>
+        </Grid>
+
+        <Border
+             Grid.Column="0" Grid.RowSpan="2"
+            BorderBrush="White" BorderThickness="2 2 2 2">
+            <Grid>
                 <Grid.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF6C0707"/>
-                        <GradientStop Color="#FFFF5E02" Offset="1"/>
+                        <GradientStop Color="#FFDA251D"/>
+                        <GradientStop Color="#FFEE680E" Offset="0.7"/>
                     </LinearGradientBrush>
                 </Grid.Background>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="125*"></RowDefinition>
-                    <RowDefinition Height="77*"></RowDefinition>
+                    <RowDefinition Height="413*"></RowDefinition>
+                    <RowDefinition Height="255*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel>
-                    <Image
-                    Margin="70, 30, 70, 0" 
-                    VerticalAlignment="Top" 
-                    RenderTransformOrigin="0.536,0.523" 
-                    Source="Logo_Hust.png"
-                    Grid.Column="0"/>
+                    <Border
+                        Grid.Column="0"
+                        Margin="70, 30, 70, 0"
+                        VerticalAlignment="Top"
+                        RenderTransformOrigin="0.536,0.523"
+                        BorderThickness="2"
+                        BorderBrush="Orange"
+                        >
+                        <Image
+                        Source="Logo_Hust.png"
+                    />
+                    </Border>
                     <TextBlock 
                         Margin="24" 
                         TextAlignment="Center"
@@ -67,24 +245,31 @@
                         Foreground="Yellow"
                         TextWrapping="Wrap" 
                         VerticalAlignment="Bottom" Width="184">
-                    ADVANCE
-                    <Span>TO-DO-LIST</Span>
+                        <TextBlock.Effect>
+                            <DropShadowEffect/>
+                        </TextBlock.Effect>
+                        <Run Text="ADVANCED "/>
+                        <Span><Run Text="TO-DO-LIST"/>
+                        </Span>
                     </TextBlock>
                 </StackPanel>
-                <Border Width="120"
-                        Height="43"
+                <Border Width="92"
+                        Height="39"
                         Grid.Row="1"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
-                        Margin="62,0,61,17"
-                        CornerRadius="20"
+                        Margin="0,0,0,17"
+                        CornerRadius="17"
                         BorderBrush="White"
-                        BorderThickness="3">
+                        BorderThickness="2">
+                    <Border.Effect>
+                        <DropShadowEffect/>
+                    </Border.Effect>
                     <Button x:Name="btn_stop"
                         Style="{StaticResource MyButton}"
                         Click="btn_stop_Click"
                         Content="STOP APP" 
-                        FontSize="20"
+                        FontSize="15"
                         FontWeight="DemiBold"
                         Foreground="White">
                     </Button>
@@ -93,36 +278,37 @@
         </Border>
 
         <Border BorderBrush="white"
-                BorderThickness="0 2 5 2"
+                BorderThickness="0 2 2 2"
                 Grid.Column="1">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height ="1.5*"></RowDefinition>
-                    <RowDefinition Height="9*"></RowDefinition>
-                    <RowDefinition Height="0.5*"></RowDefinition>
+                    <RowDefinition Height ="83*"></RowDefinition>
+                    <RowDefinition Height="509*"></RowDefinition>
+                    <RowDefinition Height="12*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="1,0">
-                        <GradientStop Color="#FFB918B9"/>
-                        <GradientStop Color="#FF3DDFF0" Offset="1"/>
+                        <GradientStop Color="#FF0D68DD"/>
+                        <GradientStop Color="#FFDA251D" Offset="1"/>
                     </LinearGradientBrush>
                 </Grid.Background>
 
                 <TextBlock 
                         FontSize="30"
                         HorizontalAlignment="Center"
-                        Margin="0 20 0 15">
+                        Margin="106,20,106,15" Width="259">
                         <Bold>SỰ KIỆN CỦA BẠN</Bold>
                 </TextBlock>
                 <TextBlock 
                         FontSize="30"
                         HorizontalAlignment="Center"
                         Foreground="Plum"
-                        Margin="4 22 0 0">
+                        Margin="108,22,104,0" Width="259">
                         <Bold>SỰ KIỆN CỦA BẠN</Bold>
                 </TextBlock>
-                <ScrollViewer x:Name="scroll_sukien" Grid.Row="1"
-                VerticalScrollBarVisibility="Auto">
+                <ScrollViewer
+                    x:Name="scroll_sukien" Grid.Row="1"
+                    VerticalScrollBarVisibility="Auto">
                     <StackPanel x:Name="pnlSuKien">
 
                     </StackPanel>
@@ -134,34 +320,44 @@
                 BorderThickness="0 2 2 2"
                 Grid.Column="2">
             <Border.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFEC8035"/>
-                    <GradientStop Color="#FFB9A900" Offset="1"/>
+                <LinearGradientBrush 
+                    EndPoint="1,0" 
+                    MappingMode="RelativeToBoundingBox" 
+                    StartPoint="0,0">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                            <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                            <RotateTransform Angle="-61.928" CenterY="0.5" CenterX="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="#FFDA251D" Offset="1"/>
+                    <GradientStop Color="#FFEC630F"/>
                 </LinearGradientBrush>
             </Border.Background>
-            <StackPanel>
+            <StackPanel Margin="0,-2,0,2">
+                <Button 
+                    x:Name="btnX"
+                    Click="btnX_click"
+                    Margin="220,5,5,0"                        
+                        Content="X"/>
                 <TextBlock 
                     FontSize="30"
                     Foreground="Black"
                     HorizontalAlignment="Center"
-                    Margin="0 20 0 0">
-                    <Bold>TẠO SỰ KIỆN</Bold>
-                </TextBlock>
+                    Margin="0 20 0 0"><Bold><Run Text="TẠO SỰ KIỆN"/></Bold></TextBlock>
                 <TextBlock 
                     FontSize="30"
                     Foreground="Plum"
                     HorizontalAlignment="Center"
-                    Margin="3 -38 0 0">
-                    <Bold>TẠO SỰ KIỆN</Bold>
-                </TextBlock>
+                    Margin="3 -38 0 0"><Bold><Run Text="TẠO SỰ KIỆN"/></Bold></TextBlock>
 
                 <TextBlock
                     FontSize="15"
                     FontWeight="Bold"
                     Foreground="White"
-                    Margin="9 20 0 0">
-                    <Bold>TÊN SỰ KIỆN</Bold> :
-                </TextBlock>
+                    Margin="9 20 0 0"><Bold><Run Text="TÊN SỰ KIỆN"/></Bold><Run Text=" :"/></TextBlock>
                 <TextBox x:Name="txtTenSuKien"
                         Text="UNNAMED EVENT"
                         Height="20"
@@ -177,142 +373,160 @@
                     FontSize="15"
                     FontWeight="Bold"
                     Foreground="White"
-                    Margin="9 10 0 0">
-                    <Bold>THỜI GIAN </Bold> :
-                </TextBlock>
+                    Margin="9 10 0 0"><Bold><Run Text="THỜI GIAN"/></Bold><Run Text=" :"/></TextBlock>
                 <DatePicker
                     x:Name="datePicker"
-                    Margin="10 5 10 5">
-                </DatePicker>
+                    Margin="10 5 10 5"/>
                 <Grid x:Name="grid_24"
                     Height="30"
-                    Margin="0 10 10 0">
+                    Margin="0 10 10 0"
+                      Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Label FontWeight="DemiBold"
                             Width="39"
                             FontSize="15"
-                           HorizontalAlignment="Right">Giờ:</Label>
+                           Foreground="White"
+                           HorizontalAlignment="Right" Content="Giờ:"/>
                     <ComboBox
+                        Foreground="Red"
+                        FontWeight="DemiBold"
                         x:Name="cb_hour24"
                         Grid.Column="1"
                         Margin="5"
-                        ></ComboBox>
+                        />
                     <Label FontWeight="DemiBold"
                             Width="45"
                            Grid.Column="2"
+                           Foreground="White"                              
                             FontSize="15"
-                           HorizontalAlignment="Right">Phút:</Label>
+                           HorizontalAlignment="Right" Content="Phút:"/>
                     <ComboBox
+                        Foreground="Red"
+                        FontWeight="DemiBold"
                         x:Name="cb_minute24"
                         Grid.Column="3"
                         Margin="5"
-                        ></ComboBox>
+                        />
                 </Grid>
                 <Grid x:Name="grid_12"
                     Height="30"
-                    Visibility="Collapsed"
+                    Visibility="Visible"
                     Margin="5 10 5 0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.8*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="0.8*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="1.1*"></ColumnDefinition>
+                        <ColumnDefinition Width="37*"/>
+                        <ColumnDefinition Width="51*"/>
+                        <ColumnDefinition Width="35*"/>
+                        <ColumnDefinition Width="52*"/>
+                        <ColumnDefinition Width="56*"/>
                     </Grid.ColumnDefinitions>
                     <Label FontWeight="DemiBold"
+                           Foreground="White"
                             Width="39"
                             FontSize="15"
-                           HorizontalAlignment="Right">Giờ:</Label>
+                           HorizontalAlignment="Right" Margin="-2,0,0,0" Content="Giờ:"/>
                     <ComboBox
+                        Foreground="Red"
+                        FontWeight="DemiBold"
                         x:Name="cb_hour12"
                         Grid.Column="1"
                         Margin="5"
-                        ></ComboBox>
+                        />
                     <Label FontWeight="DemiBold"
                             Width="45"
-                           Grid.Column="2"
+                           Foreground="White"
+                           Grid.Column="1"
                             FontSize="15"
-                           HorizontalAlignment="Right">Phút:</Label>
+                           HorizontalAlignment="Right"
+                           Grid.ColumnSpan="3" Margin="0,0,48,0" Content="Phút:"/>
                     <ComboBox
+                        Foreground="Red"
+                        FontWeight="DemiBold"
                         x:Name="cb_minute12"
                         Margin="5"
                         Grid.Column="3"
-                        ></ComboBox>
+                        />
                     <ComboBox
+                        Foreground="Red"
+                        FontWeight="DemiBold"
                         x:Name="cb_AM_PM"
                         Margin="5"
                         Grid.Column="4"
-                        ></ComboBox>
+                        />
                 </Grid>
-                <Grid Height="30" Margin="10 10 10 0">
+                <Grid Height="30" Margin="10 10 10 0"
+                      >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <RadioButton 
+                        Foreground="White"
                         x:Name="radio_24"
                         Content="Định dạng 24h"
-                        IsChecked="True"
+                        IsChecked="False"
                         Click="Radio_24_Click"
                         FontWeight="DemiBold"
-                        Grid.Column="0"></RadioButton>
+                        Grid.Column="0"/>
                     <RadioButton 
+                        Foreground="White"
                         x:Name="radio_12"
+                        IsChecked="True"
                         Content="Định dạng 12h"
                         Grid.Column="1"
                         FontWeight="DemiBold"
-                        Click="Radio_12_Click"></RadioButton>
+                        Click="Radio_12_Click"/>
                 </Grid>
 
                 <TextBlock
                     FontSize="15"
                     FontWeight="Bold"
                     Foreground="White"
-                    Margin="9 0 0 5">
-                    <Bold>VỊ TRÍ</Bold> :
-                </TextBlock>
+                    Margin="9 0 0 5"><Bold><Run Text="VỊ TRÍ"/></Bold><Run Text=" :"/></TextBlock>
                 <TextBox x:Name="txtMota"
                     Height="31"
                     Margin="10 0 10 10"
-                    BorderBrush="Red"
-                    MouseDoubleClick="txtMota_MouseDoubleClick">
-                </TextBox>
-
-                <Grid Height="95">
+                    Foreground="Blue"
+                    BorderBrush="Blue"
+                    MouseDoubleClick="txtMota_MouseDoubleClick" TextWrapping="Wrap"/>
+                <Grid Height="80">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="113*"></ColumnDefinition>
-                        <ColumnDefinition Width="149*"></ColumnDefinition>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock
-                        FontSize="15"
-                        FontWeight="Bold"
-                        Foreground="White"
-                        Margin="9,3,0,2">
-                        <Bold>BÁO TRƯỚC</Bold> :
-                    </TextBlock>
-                    <ComboBox
-                        x:Name="cb_time2remind"
-                        Grid.Column="1"
-                        Margin="5 3 10 5">
-                        <ComboBoxItem>1 phút</ComboBoxItem>
-                        <ComboBoxItem>5 phút</ComboBoxItem>
-                        <ComboBoxItem>10 phút</ComboBoxItem>
-                        <ComboBoxItem>15 phút</ComboBoxItem>
-                        <ComboBoxItem>30 phút</ComboBoxItem>
-                        <ComboBoxItem>1 giờ</ComboBoxItem>
-                        <ComboBoxItem>Không</ComboBoxItem>
-                    </ComboBox>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <CheckBox 
+                        x:Name="chk_remind"
+                        Checked="chk_remind_Checked"
+                        Unchecked="chk_remind_Unchecked"
+                        Content="Nhắc tôi khi đến sự kiện" 
+                              HorizontalAlignment="Left" 
+                              Margin="10,5,0,0" 
+                              Grid.ColumnSpan="2"
+                              Foreground="White"
+                              FontWeight="DemiBold"
+                              Grid.Row="0" 
+                              VerticalAlignment="Top"/>
                     <CheckBox 
                         x:Name="chk_loop"
-                        Content="Lặp lại theo tuần" 
+                        Checked="chk_loop_Checked"
+                        Unchecked="chk_loop_Unchecked"
+                        Content="Sự kiện lặp lại" 
                               HorizontalAlignment="Left" 
-                              Margin="10,10,0,0" 
+                              Margin="10,5,0,0" 
                               Grid.ColumnSpan="2"
+                              Foreground="White"
+                              FontWeight="DemiBold"
                               Grid.Row="1" 
                               VerticalAlignment="Top"/>
                     <CheckBox 
@@ -323,145 +537,114 @@
                               Grid.ColumnSpan="2"
                               Grid.Row="2" 
                               VerticalAlignment="Top" 
+                        Foreground="White"
+                        FontWeight="DemiBold"
                         Checked="chk_Gadget_Checked"
                         Unchecked="chk_Gadget_Unchecked"
                         />
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="2*"></RowDefinition>
-                        <RowDefinition Height="2*"></RowDefinition>
-                        <RowDefinition Height="2*"></RowDefinition>
-                    </Grid.RowDefinitions>
 
                 </Grid>
-                <Border
-                    CornerRadius="15"
-                    Margin="10 5 10 0"
-                    BorderBrush="Beige"
-                    BorderThickness="1">
-                    <Border.Background>
-                        <LinearGradientBrush 
-                            EndPoint="0,1" 
-                            StartPoint="1,0">
-                            <GradientStop Color="#FF0D47E2"/>
-                            <GradientStop Color="#FF0BF3C9" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <Button
-                        Style="{StaticResource MyButton}"
-                        Width="170"
-                        Height="35"
-                        x:Name="btn_add"
-                        Click="Btn_Add_Click"
-                        MouseEnter="btn_add_MouseEnter"
-                        FontWeight="DemiBold"
-                        Padding="10"
-                        FontSize="20"
-                        Foreground="White"
-                        Cursor="Hand"
-                        >THÊM SỰ KIỆN</Button>
-                </Border>
 
-                <Border x:Name="grid_edit"
-                    BorderThickness="2"
-                    Margin="5" Height="150">
-                    <Grid 
-                    Height="150"
-                    Margin="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="193*"/>
-                            <ColumnDefinition Width="55*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <Border
-                            CornerRadius="15"
-                            Margin="5,8"
-                            Height="35"
-                            BorderBrush="Beige"
-                            BorderThickness="1" Grid.ColumnSpan="2">
-                            <Border.Background>
-                                <LinearGradientBrush 
-                                EndPoint="0,1" 
-                                StartPoint="1,0">
-                                    <GradientStop Color="#FF0D47E2"/>
-                                    <GradientStop Color="#FF0BF3C9" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <Button
-                                Style="{StaticResource MyButton}"
-                                x:Name="btn_edit"
-                                FontWeight="DemiBold"
-                                Padding="10"
-                                FontSize="20"
-                                Foreground="White"
-                                Click="btn_edit_Click"
-                                Cursor="Hand"
-                                >SỬA SỰ KIỆN</Button>
-                        </Border>
-                        <Border
-                        Height="35"
-                        CornerRadius="15"
-                        Margin="5,8"
+                <Grid 
+                    x:Name="grid_TuyChonBaoTruoc"
+                    Height="69"
+                    Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="40*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="101*"/>
+                        <ColumnDefinition Width="140*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        FontSize="15"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Margin="9,3,0,2"
+                        Grid.ColumnSpan="2"><Bold><Run Text="CÀI ĐẶT BÁO TRƯỚC"/></Bold><Run Text=" :"/></TextBlock>
+                    <Label FontWeight="DemiBold"
+                            Width="83"
+                            FontSize="15"
+                           Foreground="White"
+                           Margin="0,3,0,2"
+                           Grid.Row="1"
+                           HorizontalAlignment="Right"
+                           RenderTransformOrigin="0.462,0.429" Content="Báo trước:"/>
+                    <ComboBox
+                        x:Name="cb_time2remind"
+                        Grid.Column="1"
                         Grid.Row="1"
-                        BorderBrush="Beige"
-                        BorderThickness="1" Grid.ColumnSpan="2">
-                            <Border.Background>
-                                <LinearGradientBrush 
-                                EndPoint="0,1" 
-                                StartPoint="1,0">
-                                    <GradientStop Color="#FF0D47E2"/>
-                                    <GradientStop Color="#FF0BF3C9" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <Button
-                                Style="{StaticResource MyButton}"
-                                x:Name="btn_del"
-                                FontWeight="DemiBold"
-                                Padding="10"
-                                FontSize="20"
-                                Foreground="White"
-                                Cursor="Hand"
-                                Click="btn_del_Click"
-                        >XOÁ SỰ KIỆN</Button>
-                        </Border>
-                        <Border
-                        Height="35"
-                        CornerRadius="15"
-                        Margin="5,8"
+                        Margin="10 10 10 9">
+                        <ComboBoxItem Content="1 phút"/>
+                        <ComboBoxItem Content="5 phút"/>
+                        <ComboBoxItem Content="10 phút"/>
+                        <ComboBoxItem Content="15 phút"/>
+                        <ComboBoxItem Content="30 phút"/>
+                        <ComboBoxItem Content="1 giờ"/>
+                        <ComboBoxItem Content="Không"/>
+                    </ComboBox>
+                </Grid>
+                <Grid 
+                    x:Name="grid_TuyChonLap"
+                    Visibility="Collapsed"
+                    Height="105">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="17*"/>
+                        <RowDefinition Height="22*"/>
+                        <RowDefinition Height="22*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="98*"/>
+                        <ColumnDefinition Width="143*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Row="0" Grid.ColumnSpan="2"
+                    FontSize="15"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Margin="9 10 0 0"><Bold><Run Text="TUỲ CHỌN LẶP"/></Bold><Run Text=" :"/></TextBlock>
+                    <TextBlock
+                        Text="Lặp theo:"
+                        VerticalAlignment="Center"
+                        Margin="25,9,10,9" Height="20"
+                        FontSize="13"
+                        FontWeight="DemiBold"
+                        Foreground="White"
+                        Grid.Row="1"
+                        />
+                    <TextBlock
                         Grid.Row="2"
-                        BorderBrush="Beige"
-                        BorderThickness="1" Grid.ColumnSpan="2">
-                            <Border.Background>
-                                <LinearGradientBrush 
-                                EndPoint="0,1" 
-                                StartPoint="1,0">
-                                    <GradientStop Color="#FF0D47E2"/>
-                                    <GradientStop Color="#FF0BF3C9" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <Button
-                                Style="{StaticResource MyButton}"
-                                x:Name="btn_miss"
-                                FontWeight="DemiBold"
-                                Padding="10"
-                                FontSize="20"
-                                Foreground="White"
-                                Cursor="Hand"
-                                Click="btn_miss_Click"
-                        >BỎ QUA SỰ KIỆN</Button>
-                        </Border>
-                    </Grid>
-                </Border>
+                        Text="Số lần lặp:"
+                        VerticalAlignment="Center"
+                        Margin="25,11,5,9" Height="18"
+                        FontSize="13"
+                        FontWeight="DemiBold"
+                        Foreground="White"
+                        />
+                    <ComboBox
+                        x:Name="cb_loopType"
+                        Grid.Column="1" Grid.Row="1"
+                        Margin="10 10 10 9">
+                        <ComboBoxItem Content="Tuần"/>
+                        <ComboBoxItem Content="Tháng"/>
+                        <ComboBoxItem Content="Năm"/>
+                    </ComboBox>
+                    <ComboBox
+                        x:Name="cb_loopNum"
+                        Grid.Column="1"
+                        Margin="10 10 10 9" Grid.Row="2"/>
+                </Grid>
             </StackPanel>
         </Border>
-        <Calendar HorizontalAlignment="Center" 
-                  Margin="33,0,35,73" 
-                  MouseDoubleClick="Calendar_MouseDoubleClick"
-                  VerticalAlignment="Bottom" 
-                  Height="165" Width="182"/>
 
+        <Calendar 
+            x:Name="calendar"
+            HorizontalAlignment="Center" 
+            Margin="29,0,31,18" 
+            MouseDoubleClick="Calendar_MouseDoubleClick"
+            VerticalAlignment="Bottom" 
+            Height="165" Width="182">
+        </Calendar>
     </Grid>
 </Window>

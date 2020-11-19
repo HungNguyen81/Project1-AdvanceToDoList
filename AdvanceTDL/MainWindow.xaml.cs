@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -26,7 +25,12 @@ namespace AdvanceTDL
             I_REMIND = 6,  
             I_TIME_REMIND = 7,
             I_IS_LOOP = 8,
-            NUM_ATTR_DATA = 10,
+            I_TYPE_LOOP = 9,
+            I_NUM_LOOP = 10,
+            I_DAU_BA_CHAM = 11,
+            I_IMAGE = 12,
+            NUM_ATTR_DATA = 13,
+
             DELTA_SEC = 1,
             MOTA_LENGTH = 30,
             UPDATE_PASSED = -1,
@@ -47,13 +51,17 @@ namespace AdvanceTDL
             IS_PASSED = 9,
             IS_REMIND = 10,
             TIME_TO_REMIND = 11,
-            IS_LOOP = 12
+            IS_LOOP = 12,
+            TYPE_OF_LOOP = 13,
+            NUM_OF_LOOP = 14,
+            NUMBER_DATA = 15
         }
+        public const int N = 99;
         public static int[] TIME_REMIND = { 1, 5, 10, 15, 30, 60, 0 };
-        public const string strDataFormat = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}";
+        public const string strDataFormat = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}";
         public static int DemNguoc = -1;
 
-        AdvanceTDL_Gadget.MainWindow mGadget;
+        AdvanceTDL_Gadget.MainGadget mGadget;
         const int SK_HOMNAY = 0;
         const int SK_NGAYMAI = 1;
         public static int Stt;          // Id của sự kiện, cũng là số thứ tự ô thông tin trong bảng các sự kiện
@@ -62,6 +70,7 @@ namespace AdvanceTDL
         private MediaPlayer player;
         static string startupPath;
         DispatcherTimer dispatcherTimer;
+        public static bool remindResult = false;
         //public static RoutedCommand MyCommand = new RoutedCommand();
 
         // Lưu giữ thời gian của sự kiện gần nhất với thời điểm hiện tại
@@ -91,10 +100,11 @@ namespace AdvanceTDL
                     player.Play();
 
                     // Khi đã thông báo remind thì có nghĩa là tăng thêm 1 sự kiện passed => cần cập nhật
-                    isUpdated = false;                    
-                    MessageBoxResult re = MessageBox.Show("Đã đến giờ !!!\n",
-                        "THÔNG BÁO", MessageBoxButton.OK, MessageBoxImage.Information); //start_winxp.mp3
-                    if (re == MessageBoxResult.OK)
+                    isUpdated = false;
+
+                    RemindDialog remindDialog = new RemindDialog(inf);
+                    remindDialog.ShowDialog();
+                    if (remindResult)
                     {
                         player.Stop();
                     }
@@ -103,7 +113,7 @@ namespace AdvanceTDL
                     if (inf.GetLoop.Equals("1"))
                     {
                         inf.MakeLoop();
-                        isUpdated = false;
+                            //isUpdated = false;                           
                     }
                 }
                 else
@@ -132,7 +142,7 @@ namespace AdvanceTDL
                 {
                     foreach (string line in lines)
                     {
-                        string[] data = line.Split('\t');
+                        string[] data = line.Split(',');
                         if (data[(int)DATA.IS_REMIND].Equals("1") && data[(int)DATA.IS_PASSED].Equals("0"))
                         {
                             int time2rm = TIME_REMIND[int.Parse(data[(int)DATA.TIME_TO_REMIND])];
@@ -157,7 +167,7 @@ namespace AdvanceTDL
                             else
                             {
                                 inf = new infoSK(data[(int)DATA.ID], data[1], data[2], date, "0", "1",
-                                    int.Parse(data[(int)DATA.TIME_TO_REMIND]), data[(int)DATA.IS_LOOP]);
+                                    int.Parse(data[(int)DATA.TIME_TO_REMIND]), data[(int)DATA.IS_LOOP], data[13], data[14]);
                                 break;
                             }                                                           
                         }
@@ -228,8 +238,6 @@ namespace AdvanceTDL
 
         private void Init()
         {
-            grid_edit.Visibility = Visibility.Collapsed;
-
             string[] id_str = File.ReadAllLines("id.csv");
             Stt = int.Parse(id_str[0]);
 
@@ -272,19 +280,14 @@ namespace AdvanceTDL
             btn_edit.BorderBrush = null;
             btn_del.BorderBrush = null;
             datePicker.SelectedDateFormat = DatePickerFormat.Long;
-        }
-        private void StoreData(int id, string tenSK, string motaSK, DateTime date, 
-            string isPast, string isRemind, int time_to_remind, string isLoop)
-        {
-            string newLine = string.Format(strDataFormat, id, tenSK, motaSK, date.DayOfWeek,
-                date.Day, date.Month, date.Year, date.Hour, date.Minute, 
-                isPast, isRemind, time_to_remind, isLoop);
-            csv = new StringBuilder();
-            csv.AppendLine(newLine);
-            File.AppendAllText("data.csv", csv.ToString());
-            File.WriteAllText("id.csv", (id+1) + "");
-            csv.Clear();
-        }
+            
+            int[] numLoop = new int[N];
+            for(int i = 0; i < N; i++)
+            {
+                numLoop[i] = i + 1;
+            }
+            cb_loopNum.ItemsSource = numLoop;
+        }        
         private int isNearEvents(DateTime date)
         {
             DateTime today = DateTime.Today;
@@ -312,6 +315,6 @@ namespace AdvanceTDL
             newCmd = new RoutedCommand();
             newCmd.InputGestures.Add(new KeyGesture(Key.M, ModifierKeys.Control));
             CommandBindings.Add(new CommandBinding(newCmd, btn_edit_Click));
-        }   
+        }
     }
 }

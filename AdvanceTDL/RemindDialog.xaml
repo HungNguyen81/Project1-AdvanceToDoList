@@ -5,8 +5,96 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdvanceTDL"
         mc:Ignorable="d"
-        Title="RemindDialog" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="RemindDialog" 
+        Height="474" Width="772"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        Topmost="True">
+    <Window.Resources>
+        <Style x:Key="MyOKButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Canvas>
+        <Canvas.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF6C0707"/>
+                <GradientStop Color="#FFFF5E02" Offset="1"/>
+            </LinearGradientBrush>
+        </Canvas.Background>
+        <Border
+            Canvas.Left="542" 
+            Canvas.Top="354"
+            BorderBrush="Plum"
+            BorderThickness="5"
+            CornerRadius="25">
+            <Border.Effect>
+                <DropShadowEffect/>
+            </Border.Effect>
+            <Button 
+                x:Name="btn_OK"
+                Content="OK"    
+                Click="btn_OK_Click"
+                Width="162" Height="57"
+                FontSize="35"
+                FontWeight="Bold"
+                Background="Transparent"
+                Foreground="Plum"
+                Style="{StaticResource MyOKButton}">
+                <Button.Effect>
+                    <DropShadowEffect/>
+                </Button.Effect>
+            </Button>
+        </Border>
+        <TextBlock 
+            FontSize="50"
+            HorizontalAlignment="Center" 
+            Canvas.Left="37" Canvas.Top="21"
+            Foreground="Plum">
+            <Bold>THÔNG BÁO</Bold>
+            <TextBlock.Effect>
+                <DropShadowEffect/>
+            </TextBlock.Effect>
+        </TextBlock>
+        <TextBlock
+            x:Name="tx_tenSK"
+            FontSize="30"
+            FontWeight="DemiBold"
+            Foreground="Wheat" 
+            Canvas.Left="37" Canvas.Top="120">
+            Sự kiện:
+        </TextBlock>
+        <TextBlock
+            x:Name="tx_thoigian"
+            FontSize="30"
+            FontWeight="DemiBold"
+            Foreground="Wheat" 
+            TextWrapping="Wrap"
+            Canvas.Left="37" Canvas.Top="180">
+            Thời gian:
+        </TextBlock>
+        <TextBlock
+            x:Name="tx_vitri"
+            FontSize="30"
+            FontWeight="DemiBold"
+            Foreground="Wheat" 
+            Canvas.Left="37" Canvas.Top="280">
+            Vị trí: 
+        </TextBlock>
+    </Canvas>
 </Window>

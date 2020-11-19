@@ -21,7 +21,7 @@ namespace AdvanceTDL
             this.main = main;
             isSave = false;
             InitializeComponent();
-            Init_EditWindow();
+            Init_EditWindow();            
         }
 
         private void Init_EditWindow()
@@ -61,15 +61,28 @@ namespace AdvanceTDL
             cb_gio.SelectedIndex = gio;
             cb_phut.SelectedIndex = phut;
             cb_time2remind.SelectedIndex = int.Parse(texts[(int)MainWindow.myConsts.I_TIME_REMIND]);
-            if(texts[(int)MainWindow.myConsts.I_IS_LOOP].Equals("0"))
+            if (texts[(int)MainWindow.myConsts.I_IS_LOOP].Equals("0"))
+            {
                 chk_loop.IsChecked = false;
+                grid_loopOption.Visibility = Visibility.Collapsed;
+            }
             else
+            {
                 chk_loop.IsChecked = true;
+                grid_loopOption.Visibility = Visibility.Visible;                
+            }
+
+            int n = MainWindow.N;
+            int[] num = new int[n];
+            for (int i = 0; i < n; i++)
+                num[i] = i + 1;
+
+            cb_numLoop.ItemsSource = num;
 
             txb_Id.Text = "ID: " + texts[(int)MainWindow.myConsts.I_ID];
 
             if (texts[(int)MainWindow.myConsts.I_REMIND] == "1") check_remind.IsChecked = true;
-            else check_remind.IsChecked = false;
+            else check_remind.IsChecked = false;            
         }
 
         private void EditWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -123,13 +136,25 @@ namespace AdvanceTDL
                 {
                     foreach (string line in lines)
                     {
-                        string[] s = line.Split('\t');
+                        string[] s = line.Split(',');
                         if (int.Parse(s[0]) == id_num)
                         {
-                            int isLoop = (chk_loop.IsChecked == true) ? 1 : 0;
+                            int isLoop, typeLoop, numLoop;
+                            if (chk_loop.IsChecked == true)
+                            {
+                                isLoop = 1;
+                                typeLoop = cb_typeLoop.SelectedIndex;
+                                numLoop = cb_numLoop.SelectedIndex + 1;
+                            }
+                            else
+                            {
+                                isLoop = 0;
+                                typeLoop = 0;
+                                numLoop = 0;
+                            }
                             string newLine = string.Format(MainWindow.strDataFormat,
                                         id_num, children[0].Text, children[1].Text, date.DayOfWeek, date.Day,
-                                        date.Month, date.Year, h, m, s[9], remind, cb_time2remind.SelectedIndex, isLoop);
+                                        date.Month, date.Year, h, m, s[9], remind, cb_time2remind.SelectedIndex, isLoop, typeLoop, numLoop);
                             sb.AppendLine(newLine);
                         }
                         else
@@ -168,6 +193,16 @@ namespace AdvanceTDL
         {
             isSave = false;
             this.Close();
+        }
+
+        private void chk_loop_Checked(object sender, RoutedEventArgs e)
+        {
+            grid_loopOption.Visibility = Visibility.Visible;
+        }
+
+        private void chk_loop_Unchecked(object sender, RoutedEventArgs e)
+        {
+            grid_loopOption.Visibility = Visibility.Collapsed;
         }
     }
 }

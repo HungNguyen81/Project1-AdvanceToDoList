@@ -32,40 +32,40 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        
-            <TextBox x:Name="txt_edit_tenSK"
+
+        <TextBox x:Name="txt_edit_tenSK"
                 Margin="15"
                 Height="25"
                 Grid.Column="1"
                 Grid.Row="1"
                 MouseDoubleClick="txt_edit_tenSK_MouseDoubleClick">
-            </TextBox>
-            <TextBox x:Name="txt_edit_motaSK"
+        </TextBox>
+        <TextBox x:Name="txt_edit_motaSK"
                 Margin="15"
                 Height="25"
                 Grid.Column="1"
                 Grid.Row="2"
                 MouseDoubleClick="txt_edit_motaSK_MouseDoubleClick">
-            </TextBox>
+        </TextBox>
         <DatePicker
                 x:Name="date_edit"
                 Margin="15 20 15 15"
                 Grid.Column="1"
                 Grid.Row="3">
         </DatePicker>
-           <ComboBox
+        <ComboBox
                 x:Name="cb_gio"
                 Margin="15"
                 
                 Grid.Column="1"
                 Grid.Row="4">
-            </ComboBox>
-            <ComboBox
+        </ComboBox>
+        <ComboBox
                 x:Name="cb_phut"
                 Margin="15"
                 Grid.Column="1"
                 Grid.Row="5">
-            </ComboBox>
+        </ComboBox>
         <TextBlock
             Grid.Row="6"
             VerticalAlignment="Center"
@@ -89,15 +89,71 @@
             <ComboBoxItem>1 giờ</ComboBoxItem>
             <ComboBoxItem>Không</ComboBoxItem>
         </ComboBox>
-        <CheckBox
+
+        <Grid
+            Grid.Row="7"
+            Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="93*"></ColumnDefinition>
+                <ColumnDefinition Width="206*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <CheckBox
             x:Name="chk_loop"
             Content="Lặp lại"
-            Grid.Row="7"
-            Grid.Column="1"
             Margin="15 22 15 15"
             FontSize="15"
-            FontWeight="DemiBold">
-        </CheckBox>
+            FontWeight="DemiBold"
+                Checked="chk_loop_Checked"
+                Unchecked="chk_loop_Unchecked">
+            </CheckBox>
+            <Grid
+                x:Name="grid_loopOption"
+                Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="41*"></ColumnDefinition>
+                    <ColumnDefinition Width="62*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+            Grid.Row="0"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            FontSize="13"
+            FontWeight="DemiBold"
+            Foreground="White"
+            Margin="10 10 0 5">
+            Lặp theo:
+                </TextBlock>
+                <TextBlock
+            Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            FontSize="13"
+            FontWeight="DemiBold"
+            Foreground="White"
+            Margin="10 10 0 5">
+            Số lần lặp:
+                </TextBlock>
+                <ComboBox
+                x:Name="cb_typeLoop"
+                Margin="5 5 15 0"                
+                Grid.Column="1"
+                Grid.Row="0">
+                    <ComboBoxItem>Tuần</ComboBoxItem>
+                    <ComboBoxItem>Tháng</ComboBoxItem>
+                    <ComboBoxItem>Năm</ComboBoxItem>
+                </ComboBox>
+                <ComboBox
+                x:Name="cb_numLoop"
+                Margin="5 5 15 0"                
+                Grid.Column="1"
+                Grid.Row="1">
+                </ComboBox>
+            </Grid>
+        </Grid>
         <TextBlock
             Grid.Row="7"
             VerticalAlignment="Center"
@@ -108,14 +164,14 @@
             Margin="10">
             Lặp lại mỗi tuần:
         </TextBlock>
-        
-            <TextBlock x:Name="txb_Id"
+
+        <TextBlock x:Name="txb_Id"
                        Margin="15"
                        FontSize="50"
                        Grid.Column="0"
                        Grid.Row="8"
                        Grid.RowSpan="2">ID
-            </TextBlock>
+        </TextBlock>
 
         <TextBlock
             Grid.ColumnSpan="2"
