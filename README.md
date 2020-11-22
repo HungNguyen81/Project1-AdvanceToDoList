@@ -1,6 +1,6 @@
 # Project1-AdvanceToDoList
 To setup, create a shortcut of Advanced_TDL.exe and copy to path "C:\Users\USERNAME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
-The excutable file Advanced_TDL can be found in "AdvanceTDL\AdvanceTDL\bin\Debug"
+The executable file Advanced_TDL can be found in "AdvanceTDL\AdvanceTDL\bin\Debug"
 
 * Icon:
 
