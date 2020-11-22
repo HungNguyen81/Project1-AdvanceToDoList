@@ -17,6 +17,10 @@
 
 ![alt](https://github.com/HungNguyen81/Project1-AdvanceToDoList/blob/master/ADTL_updated.png?raw=true)
 
+- Gadget:
+
+![alt](https://github.com/HungNguyen81/Project1-AdvanceToDoList/blob/master/ADTL_gadget.png?raw=true)
+
 - Reminder Dialog:
 
 ![alt](https://github.com/HungNguyen81/Project1-AdvanceToDoList/blob/master/ADTL_remind.png?raw=true)
