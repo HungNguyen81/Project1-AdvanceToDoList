@@ -53,10 +53,22 @@ namespace AdvanceTDL
             TIME_TO_REMIND = 11,
             IS_LOOP = 12,
             TYPE_OF_LOOP = 13,
-            NUM_OF_LOOP = 14,
-            NUMBER_DATA = 15
+            NUM_OF_LOOP = 14            
         }
-        public const int N = 99;
+
+        public enum TimeToRemind
+        {
+            MOT_PHUT = 0,
+            NAM_PHUT = 1,
+            MUOI_PHUT = 2,
+            MUOI_LAM_PHUT = 3,
+            BA_MUOI_PHUT = 4,
+            MOT_GIO = 5,
+            KHONG_BAO_TRUOC = 6
+        }
+
+        public const int N = 100;
+        public static int[] numLoop;
         public static int[] TIME_REMIND = { 1, 5, 10, 15, 30, 60, 0 };
         public const string strDataFormat = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}";
         public static int DemNguoc = -1;
@@ -145,11 +157,13 @@ namespace AdvanceTDL
                         string[] data = line.Split(',');
                         if (data[(int)DATA.IS_REMIND].Equals("1") && data[(int)DATA.IS_PASSED].Equals("0"))
                         {
+                            /* GET TIME BEFORE REMIND */ 
                             int time2rm = TIME_REMIND[int.Parse(data[(int)DATA.TIME_TO_REMIND])];
+
                             int h = int.Parse(data[(int)DATA.GIO]), m = int.Parse(data[(int)DATA.PHUT]);
                             if (time2rm >= 60)
                             {
-                                if(int.Parse(data[(int)DATA.GIO]) == 6)
+                                if(int.Parse(data[(int)DATA.GIO]) == (int)TimeToRemind.KHONG_BAO_TRUOC)
                                 {
                                     h = 24;
                                 }
@@ -167,7 +181,7 @@ namespace AdvanceTDL
                             else
                             {
                                 inf = new infoSK(data[(int)DATA.ID], data[1], data[2], date, "0", "1",
-                                    int.Parse(data[(int)DATA.TIME_TO_REMIND]), data[(int)DATA.IS_LOOP], data[13], data[14]);
+                                    int.Parse(data[(int)DATA.TIME_TO_REMIND]), data[(int)DATA.IS_LOOP], int.Parse(data[13]), int.Parse(data[14]));
                                 break;
                             }                                                           
                         }
@@ -281,12 +295,14 @@ namespace AdvanceTDL
             btn_del.BorderBrush = null;
             datePicker.SelectedDateFormat = DatePickerFormat.Long;
             
-            int[] numLoop = new int[N];
+            numLoop = new int[N];
             for(int i = 0; i < N; i++)
             {
                 numLoop[i] = i + 1;
             }
             cb_loopNum.ItemsSource = numLoop;
+            cb_loopType.SelectedIndex = 0;
+            cb_loopNum.SelectedIndex = 0;
         }        
         private int isNearEvents(DateTime date)
         {

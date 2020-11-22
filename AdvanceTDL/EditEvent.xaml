@@ -100,7 +100,7 @@
             <CheckBox
             x:Name="chk_loop"
             Content="Lặp lại"
-            Margin="15 22 15 15"
+            Margin="15,22,10,15"
             FontSize="15"
             FontWeight="DemiBold"
                 Checked="chk_loop_Checked"
@@ -142,6 +142,7 @@
                 Margin="5 5 15 0"                
                 Grid.Column="1"
                 Grid.Row="0">
+                    <ComboBoxItem>Ngày</ComboBoxItem>
                     <ComboBoxItem>Tuần</ComboBoxItem>
                     <ComboBoxItem>Tháng</ComboBoxItem>
                     <ComboBoxItem>Năm</ComboBoxItem>

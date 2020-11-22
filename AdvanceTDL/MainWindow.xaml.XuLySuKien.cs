@@ -71,7 +71,7 @@ namespace AdvanceTDL
         {
             Button btn = (Button)sender;
             Border border = (Border)btn.Parent;
-            border.Background = Brushes.Gray;
+            border.Background = passedBrush;
         }
         private void input_tenSuKien_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -152,16 +152,12 @@ namespace AdvanceTDL
             b.Background = Brushes.White;
             EditEvent ed = new EditEvent(this);
             ed.ShowDialog();
-            //grid_edit.Visibility = Visibility.Collapsed;
         }
 
         /* DELETE EVENT'S INFORMATION */
 
         private void btn_del_Click(object sender, RoutedEventArgs e)
         {
-            //Border b = (Border)btn_Current_Focus.Parent;
-            //b.Background = Brushes.White;
-            //grid_edit.Visibility = Visibility.Collapsed;
             MessageBoxResult re = MessageBox.Show("Bạn có muốn xoá sự kiện này ?", "ĐỢI CHÚT ...",
                 MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 

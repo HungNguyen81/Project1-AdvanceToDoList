@@ -36,6 +36,8 @@ namespace AdvanceTDL
             }
             cb_gio.ItemsSource = hours;
             cb_phut.ItemsSource = mins;
+            cb_numLoop.ItemsSource = MainWindow.numLoop;
+
             btnSender = MainWindow.btn_Current_Focus;
             Canvas c = (Canvas)btnSender.Content;
             string[] texts = new string[(int)MainWindow.myConsts.NUM_ATTR_DATA];
@@ -69,15 +71,10 @@ namespace AdvanceTDL
             else
             {
                 chk_loop.IsChecked = true;
-                grid_loopOption.Visibility = Visibility.Visible;                
-            }
-
-            int n = MainWindow.N;
-            int[] num = new int[n];
-            for (int i = 0; i < n; i++)
-                num[i] = i + 1;
-
-            cb_numLoop.ItemsSource = num;
+                grid_loopOption.Visibility = Visibility.Visible;
+                cb_typeLoop.SelectedIndex = int.Parse(texts[(int)MainWindow.myConsts.I_TYPE_LOOP]);
+                cb_numLoop.SelectedIndex = int.Parse(texts[(int)MainWindow.myConsts.I_NUM_LOOP]);
+            }            
 
             txb_Id.Text = "ID: " + texts[(int)MainWindow.myConsts.I_ID];
 
@@ -144,7 +141,7 @@ namespace AdvanceTDL
                             {
                                 isLoop = 1;
                                 typeLoop = cb_typeLoop.SelectedIndex;
-                                numLoop = cb_numLoop.SelectedIndex + 1;
+                                numLoop = cb_numLoop.SelectedIndex;
                             }
                             else
                             {

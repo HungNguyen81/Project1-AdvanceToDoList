@@ -7,9 +7,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace AdvanceTDL
-{
+{    
     public partial class MainWindow
     {
+        private Brush passedBrush = Brushes.Violet;
         private void Add_Event(string id, string TenSK, string MotaSK, DateTime date, int Gio, 
             int Phut, string isPast, string isRemind, string time2remind, string isLoop, string typeOfLoop, string numOfLoop, bool needToUpdate)
         {
@@ -80,7 +81,7 @@ namespace AdvanceTDL
             else
             {
                 border.Opacity = 0.8f;
-                border.Background = Brushes.BlueViolet;
+                border.Background = passedBrush;
                 btn.Foreground = Brushes.White;
                 btn.GotFocus += new RoutedEventHandler(onGotFocus_Pass_Event);
                 btn.LostFocus += new RoutedEventHandler(onLossFocus_Pass_Event);
@@ -118,11 +119,13 @@ namespace AdvanceTDL
             txMore.Visibility = Visibility.Collapsed;
 
             txMoTaSK.Width = 200;
+
+            // Nếu mota quá dài => tăng chiều cao của ô SK
             if (MotaSK.Length > (int)myConsts.MOTA_LENGTH)
             {
                 canvas.Height = btn.Height = 110 + 30 * (int)(MotaSK.Length / (int)myConsts.MOTA_LENGTH);
             }
-            if (TenSK.Length > 18) txMore.Visibility = Visibility.Visible;
+            if (TenSK.Length > 20) txMore.Visibility = Visibility.Visible;
             txMoTaSK.Text = MotaSK;
             txMoTaSK.TextWrapping = TextWrapping.Wrap;
             txMoTaSK.Margin = new Thickness(10, 40, 0, 0);

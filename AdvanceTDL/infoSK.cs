@@ -10,8 +10,8 @@ namespace AdvanceTDL
         private string IsPast;
         private string IsRemind;
         private int time2remind;
-        private string typeOfLoop;
-        private string numOfLoop;
+        private int typeOfLoop;
+        private int numOfLoop;
 
         public infoSK(string id, string TenSK, string MotaSK,
             DateTime date, string IsPast, string IsRemind)
@@ -24,11 +24,11 @@ namespace AdvanceTDL
             this.IsRemind = IsRemind;
             this.time2remind = 0;
             this.GetLoop = "0";
-            typeOfLoop = "0";
-            numOfLoop = "0";
+            typeOfLoop = 0;
+            numOfLoop = 0;
         }
         public infoSK(string id, string TenSK, string MotaSK,
-            DateTime date, string IsPast, string IsRemind, int time2remind, string isLoop, string typeOfLoop, string numOfLoop)
+            DateTime date, string IsPast, string IsRemind, int time2remind, string isLoop, int typeOfLoop, int numOfLoop)
         {
             this.id = id;
             this.TenSK = TenSK;
@@ -43,7 +43,7 @@ namespace AdvanceTDL
         }
 
         public int NumOfLoop{
-            get { return int.Parse(numOfLoop); }
+            get { return numOfLoop; }
         }
 
         public DateTime getDate { get; set; }
@@ -55,7 +55,8 @@ namespace AdvanceTDL
         public string TenSK { get; }
         public string getTime()
         {
-            return "Ngày: " + getDate.ToLongDateString() + "\n" + "Giờ: " + getDate.ToLongTimeString();
+            DateTime date = getDate.AddMinutes(MainWindow.TIME_REMIND[time2remind]);
+            return "Ngày: " + date.ToLongDateString() + "\n" + "Giờ: " + date.ToLongTimeString();
         }
         public string MotaSK { get; }
         public string GetLoop { get; }
@@ -68,23 +69,26 @@ namespace AdvanceTDL
 
         public bool MakeLoop()
         {
-            if (numOfLoop.Equals("0")) return false;
+            if (numOfLoop == 0) return false;
             switch (typeOfLoop)
             {
-                case "0":
+                case 0:
+                    getDate = getDate.AddDays(1);
+                    break;
+                case 1:
                     getDate = getDate.AddDays(7);
                     break;
-                case "1":
+                case 2:
                     getDate = getDate.AddMonths(1);
                     break;
-                case "2":
+                case 3:
                     getDate = getDate.AddYears(1);
                     break;
                 default:
-                    getDate = getDate.AddDays(7);
+                    getDate = getDate.AddDays(1);
                     break;
             }
-            numOfLoop = "" + (int.Parse(numOfLoop) - 1);
+            numOfLoop--;
 
             DateTime d = getDate.AddMinutes(MainWindow.TIME_REMIND[time2remind]);
             string newLine = string.Format(MainWindow.strDataFormat, id, TenSK, MotaSK,

@@ -116,7 +116,7 @@ namespace AdvanceTDL
                         int.Parse(data[7]), int.Parse(data[8]), 0);
 
                     listSK.Add(new infoSK(data[0], data[1], data[2], date[i++], data[9], 
-                        data[10], int.Parse(data[11]), data[12], data[13], data[14]));
+                        data[10], int.Parse(data[11]), data[12], int.Parse(data[13]), int.Parse(data[14])));
                 }
                 listSK.Sort();
                 foreach (infoSK s in listSK)

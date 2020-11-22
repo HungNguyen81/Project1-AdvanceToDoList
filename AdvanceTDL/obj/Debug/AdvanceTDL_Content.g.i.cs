@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("audio_thongbao.mp3")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("note.png")]
 
 
